@@ -318,7 +318,7 @@
 </button>
 
 <!-- Category Modal -->
-<div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true" style="z-index: 1050;">
+<div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="margin: 20px;">
         <div class="modal-content border-0" style="background: transparent;">
             <div class="bg-white" style="border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); overflow: hidden;">
