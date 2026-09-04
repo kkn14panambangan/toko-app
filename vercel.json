@@ -12,6 +12,10 @@
     ],
     "routes": [
         {
+            "src": "/qris-payment.jpg",
+            "dest": "/public/qris-payment.jpg"
+        },
+        {
             "src": "/build/(.*)",
             "dest": "/public/build/$1"
         },
