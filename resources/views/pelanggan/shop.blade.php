@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+    $sessionCart = session()->get('cart', []);
+    $cartTotal = collect($sessionCart)->sum(fn($item) => $item['harga'] * $item['quantity']);
+    $cartCount = collect($sessionCart)->sum('quantity');
+@endphp
 <!-- Google Fonts: Inter (Lebih mirip GrabFood) -->
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -426,12 +431,6 @@
     </div>
 </div>
 
-
-@php
-    $sessionCart = session()->get('cart', []);
-    $cartTotal = collect($sessionCart)->sum(fn($item) => $item['harga'] * $item['quantity']);
-    $cartCount = collect($sessionCart)->sum('quantity');
-@endphp
 
 <a href="{{ route('pelanggan.cart') }}" class="text-decoration-none" id="cart-bar" style="display: {{ $cartCount > 0 ? 'block' : 'none' }};">
     <div style="position: fixed; bottom: 0; left: 0; right: 0; background: #00880F; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; z-index: 1040; box-shadow: 0 -4px 12px rgba(0,0,0,0.15);">
