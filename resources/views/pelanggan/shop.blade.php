@@ -249,7 +249,8 @@
 
 <!-- Floating Store Card -->
 <div class="grab-store-card">
-    <h1 class="store-title">Kembang Tahu 65 Bapak Ujang</h1>
+    <h1 class="store-title">Kembang Tahu Pak Ujang</h1>
+    <h2 class="text-muted mb-2" style="font-size: 1rem; font-weight: 500;">Khas Panambangan</h2>
     <div class="store-meta">
         <i class="fas fa-star text-warning me-1"></i> <span class="fw-bold me-1 text-dark">4.9</span> (48rb+) <i class="fas fa-chevron-right ms-2 text-muted" style="font-size: 0.7rem;"></i>
     </div>
