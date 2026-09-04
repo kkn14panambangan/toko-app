@@ -148,6 +148,22 @@
     </div>
 </div>
 
+<!-- E-Catalog QR Section -->
+<div class="container py-5 border-top mt-5">
+    <div class="row align-items-center justify-content-center bg-light rounded-4 p-4 p-md-5 shadow-sm">
+        <div class="col-md-5 text-center mb-4 mb-md-0">
+            <img src="{{ Storage::url('qr-menu.png') }}" alt="QR Code E-Catalog" class="img-fluid rounded-3 shadow" style="max-width: 250px; border: 10px solid white;">
+        </div>
+        <div class="col-md-7 text-center text-md-start">
+            <h3 class="fw-bold text-primary mb-3"><i class="fas fa-qrcode me-2"></i>E-Catalog Kembang Tahu 65</h3>
+            <p class="lead text-muted mb-4">Simpan atau pindai (Scan) QR Code ini untuk membagikan atau melihat menu digital kami dengan mudah kapan saja!</p>
+            <a href="{{ Storage::url('qr-menu.png') }}" download="QR-Kembang-Tahu-65.png" target="_blank" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">
+                <i class="fas fa-download me-2"></i>Download QR Code
+            </a>
+        </div>
+    </div>
+</div>
+
 <style>
 .btn-category {
     padding: 10px 25px;
