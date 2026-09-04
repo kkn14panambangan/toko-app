@@ -98,7 +98,7 @@
                                                 <th colspan="3" class="text-end">Metode Pembayaran:</th>
                                                 <td class="text-end">{{ $transaction->metode_pembayaran }}</td>
                                             </tr>
-                                            @if($transaction->status == 'success' && $transaction->metode_pembayaran == 'Tunai')
+                                            @if($transaction->status == 'success' && $transaction->metode_pembayaran == 'tunai')
                                             <tr>
                                                 <th colspan="3" class="text-end">Uang Dibayar:</th>
                                                 <td class="text-end">Rp {{ number_format($transaction->uang_dibayar ?? 0, 0, ',', '.') }}</td>

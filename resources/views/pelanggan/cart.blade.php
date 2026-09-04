@@ -235,13 +235,13 @@
 <!-- Metode Pembayaran -->
 <div class="section-card">
     <div class="section-title">Metode Pembayaran</div>
-    <label class="payment-method-btn" onclick="selectPayment('Qris', this)">
+    <label class="payment-method-btn" onclick="selectPayment('qris', this)">
         <div class="d-flex align-items-center gap-2">
             <i class="fas fa-qrcode" style="color: #00880F;"></i> QRIS
         </div>
         <i class="fas fa-check-circle check-icon" style="color: #00880F;"></i>
     </label>
-    <label class="payment-method-btn inactive" onclick="selectPayment('Tunai', this)">
+    <label class="payment-method-btn inactive" onclick="selectPayment('tunai', this)">
         <div class="d-flex align-items-center gap-2">
             <i class="fas fa-money-bill-wave" style="color: #6B7280;"></i> Tunai
         </div>
@@ -268,7 +268,7 @@
 <form action="{{ route('pelanggan.checkout') }}" method="POST" id="checkoutForm">
     @csrf
     <input type="hidden" name="total" value="{{ $total }}">
-    <input type="hidden" name="metode_pembayaran" id="metode_pembayaran" value="Qris">
+    <input type="hidden" name="metode_pembayaran" id="metode_pembayaran" value="qris">
     
     <div class="sticky-checkout">
         <button type="submit" class="checkout-btn">
