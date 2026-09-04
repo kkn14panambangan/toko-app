@@ -696,6 +696,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if (e.target === waBtn || waBtn.contains(e.target)) {
             isDragging = true;
+            waBtn.style.transition = 'none'; // Disable transition for smooth dragging
+            waBtn.style.animation = 'none'; // Disable pulse animation
         }
     }
 
@@ -719,7 +721,6 @@ document.addEventListener('DOMContentLoaded', function() {
             xOffset = currentX;
             yOffset = currentY;
             waBtn.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
-            waBtn.style.animation = 'none'; // Stop pulse when dragged
         }
     }
 
