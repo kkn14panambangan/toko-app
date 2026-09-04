@@ -56,7 +56,7 @@
 @endif
 
     <!-- Content -->
-    <main class="py-4 pb-5 mb-5">
+    <main class="py-4">
         @yield('content')
     </main>
 
@@ -67,27 +67,7 @@
         </div>
     </footer>
 
-    <!-- Mobile Bottom Navigation -->
-    <nav class="navbar fixed-bottom bg-white border-top shadow-lg d-md-none pb-2 pt-2 px-3">
-        <div class="container-fluid d-flex justify-content-between">
-            <a href="{{ route('pelanggan.shop') }}" class="text-decoration-none text-center flex-fill {{ request()->routeIs('pelanggan.shop') ? 'text-danger' : 'text-secondary' }}" style="{{ request()->routeIs('pelanggan.shop') ? 'color: #C62A29 !important;' : '' }}">
-                <i class="fas fa-store d-block mb-1 fs-5"></i>
-                <small style="font-size: 0.75rem; font-weight: 600;">Toko</small>
-            </a>
-            <a href="{{ route('pelanggan.cart') }}" class="text-decoration-none text-center flex-fill {{ request()->routeIs('pelanggan.cart') ? 'text-danger' : 'text-secondary' }}" style="{{ request()->routeIs('pelanggan.cart') ? 'color: #C62A29 !important;' : '' }}">
-                <i class="fas fa-shopping-cart d-block mb-1 fs-5"></i>
-                <small style="font-size: 0.75rem; font-weight: 600;">Keranjang</small>
-            </a>
-            <a href="{{ route('pelanggan.history') }}" class="text-decoration-none text-center flex-fill {{ request()->routeIs('pelanggan.history') ? 'text-danger' : 'text-secondary' }}" style="{{ request()->routeIs('pelanggan.history') ? 'color: #C62A29 !important;' : '' }}">
-                <i class="fas fa-history d-block mb-1 fs-5"></i>
-                <small style="font-size: 0.75rem; font-weight: 600;">Riwayat</small>
-            </a>
-            <a href="{{ auth()->check() && auth()->user()->role == 'admin' ? route('admin.dashboard') : route('admin.login') }}" class="text-decoration-none text-center flex-fill {{ request()->routeIs('admin.*') ? 'text-danger' : 'text-secondary' }}" style="{{ request()->routeIs('admin.*') ? 'color: #C62A29 !important;' : '' }}">
-                <i class="fas fa-user-shield d-block mb-1 fs-5"></i>
-                <small style="font-size: 0.75rem; font-weight: 600;">Admin</small>
-            </a>
-        </div>
-    </nav>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>

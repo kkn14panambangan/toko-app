@@ -252,7 +252,9 @@
     <h1 class="store-title">Kembang Tahu Pak Ujang</h1>
     <h2 class="text-muted mb-2" style="font-size: 1rem; font-weight: 500;">Khas Panambangan</h2>
     <div class="store-meta">
-        <i class="fas fa-star text-warning me-1"></i> <span class="fw-bold me-1 text-dark">4.9</span> (48rb+) <i class="fas fa-chevron-right ms-2 text-muted" style="font-size: 0.7rem;"></i>
+        <a href="https://maps.google.com/?q=Kembang+Tahu+Pak+Ujang+Panambangan" target="_blank" class="text-decoration-none d-flex align-items-center">
+            <i class="fas fa-star text-warning me-1"></i> <span class="fw-bold me-1 text-dark">5.0</span> <span class="text-muted">(0 ulasan)</span> <i class="fas fa-chevron-right ms-2 text-muted" style="font-size: 0.7rem;"></i>
+        </a>
     </div>
     <div class="store-meta text-muted mb-3" style="font-size: 0.8rem; line-height: 1.4;">
         <i class="fas fa-map-marker-alt me-2 mt-1" style="float: left;"></i> 
