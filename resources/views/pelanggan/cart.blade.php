@@ -1,198 +1,309 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <!-- Header -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="fw-bold mb-0">
-                    <i class="fas fa-shopping-cart me-2 text-primary"></i>Keranjang Belanja
-                </h1>
-                <a href="{{ route('pelanggan.shop') }}" class="btn btn-outline-primary">
-                    <i class="fas fa-arrow-left me-2"></i>Lanjutkan Belanja
-                </a>
-            </div>
+@php
+    $total = 0;
+    foreach($cart as $item) {
+        $total += $item['harga'] * $item['quantity'];
+    }
+    $cartCount = collect($cart)->sum('quantity');
+@endphp
 
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Inter', sans-serif; background: #F3F4F6; padding-bottom: 100px; }
 
-            @if(session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
+    .cart-header {
+        background: white;
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .cart-header-back {
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        background: #F3F4F6;
+        border: none;
+        color: #111827;
+        font-size: 1rem;
+        text-decoration: none;
+    }
+    .cart-header-title { font-weight: 700; font-size: 1.1rem; color: #111827; }
 
-            @if($cart && count($cart) > 0)
-                <!-- Cart Items -->
-                <div class="card border-0 shadow-sm mb-4" style="border-radius: 15px;">
-                    <div class="card-body p-4">
-                        @php $total = 0; @endphp
-                        @foreach($cart as $productId => $item)
-                            @php 
-                                $subtotal = $item['harga'] * $item['quantity']; 
-                                $total += $subtotal; 
-                            @endphp
-                            <div class="cart-item mb-3 pb-3 border-bottom">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        @if(isset($item['gambar']) && $item['gambar'])
-                                            <img src="{{ Storage::url($item['gambar']) }}" 
-                                                 class="img-fluid rounded" 
-                                                 alt="{{ $item['nama'] }}"
-                                                 style="width: 80px; height: 80px; object-fit: cover;">
-                                        @else
-                                            <div class="bg-light rounded d-flex align-items-center justify-content-center" 
-                                                 style="width: 80px; height: 80px;">
-                                                <i class="fas fa-image text-muted"></i>
-                                            </div>
-                                        @endif
-                                    </div>
-                                    <div class="col-md-4">
-                                        <h6 class="fw-bold mb-1">{{ $item['nama'] }}</h6>
-                                        <p class="text-muted small mb-0">Rp {{ number_format($item['harga'], 0, ',', '.') }}</p>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="d-flex align-items-center">
-                                            <form action="{{ route('pelanggan.cart.update', $productId) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <input type="hidden" name="quantity" value="{{ $item['quantity'] - 1 }}">
-                                                <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                            </form>
-                                            <input type="text" 
-                                                   class="form-control form-control-sm text-center mx-2" 
-                                                   value="{{ $item['quantity'] }}" 
-                                                   readonly
-                                                   style="width: 60px;">
-                                            <form action="{{ route('pelanggan.cart.update', $productId) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <input type="hidden" name="quantity" value="{{ $item['quantity'] + 1 }}">
-                                                <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                                    <i class="fas fa-plus"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <span class="fw-bold text-primary">Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
-                                    </div>
-                                    <div class="col-md-1 text-end">
-                                        <form action="{{ route('pelanggan.cart.remove', $productId) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-link text-danger" onclick="return confirm('Hapus produk ini?')">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
+    .store-info-bar {
+        background: white;
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid #F3F4F6;
+    }
+    .store-icon {
+        width: 36px; height: 36px;
+        border-radius: 8px;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+    .store-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .store-name { font-weight: 700; font-size: 0.9rem; color: #111827; }
+    .store-sub { font-size: 0.75rem; color: #6B7280; }
 
-                <!-- Checkout Section -->
-                <div class="card border-0 shadow-sm" style="border-radius: 15px; background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);">
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h5 class="fw-bold mb-0">Total Pembayaran</h5>
-                            <h3 class="text-primary fw-bold mb-0">Rp {{ number_format($total, 0, ',', '.') }}</h3>
-                        </div>
+    .cart-item-row {
+        background: white;
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        border-bottom: 1px solid #F9FAFB;
+    }
+    .cart-item-img {
+        width: 72px; height: 72px;
+        border-radius: 10px;
+        object-fit: cover;
+        flex-shrink: 0;
+        background: #F3F4F6;
+    }
+    .qty-control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .qty-btn {
+        width: 28px; height: 28px;
+        border-radius: 50%;
+        border: 1.5px solid #00880F;
+        background: white;
+        color: #00880F;
+        font-size: 0.9rem;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 700;
+        cursor: pointer;
+    }
+    .qty-num { font-weight: 700; color: #111827; min-width: 18px; text-align: center; }
 
-                        <!-- QR Code Display -->
-                        <div class="mb-4">
-                            <div class="card border-0 shadow-sm" style="border-radius: 15px; background: white;">
-                                <div class="card-body p-4 text-center">
-                                    <h5 class="fw-bold mb-3">
-                                        <i class="fas fa-qrcode me-2 text-primary"></i>Scan QR Code untuk Pembayaran
-                                    </h5>
-                                    <div class="qrcode-container mb-3 p-3 bg-white rounded-3 d-inline-block" style="border: 3px solid #667eea;">
-                                        <img id="qrCodeImage" 
-                                             src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=QRIS-Pembayaran-KembangTahu66-Rp{{ $total }}" 
-                                             alt="QR Code Pembayaran" 
-                                             class="img-fluid"
-                                             style="width: 250px; height: 250px;">
-                                    </div>
-                                    <p class="text-muted mb-2">
-                                        <i class="fas fa-info-circle me-1"></i>
-                                        Scan QR Code di atas menggunakan aplikasi e-wallet atau mobile banking Anda
-                                    </p>
-                                    <div class="alert alert-info mt-3 mb-0">
-                                        <small>
-                                            <i class="fas fa-clock me-1"></i>
-                                            <strong>Total:</strong> Rp {{ number_format($total, 0, ',', '.') }}<br>
-                                            <i class="fas fa-store me-1"></i>
-                                            <strong>Toko:</strong> Kembang Tahu 66
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    .section-card {
+        background: white;
+        margin: 10px 0 0;
+        padding: 16px 20px;
+    }
+    .section-title { font-weight: 700; font-size: 0.9rem; color: #111827; margin-bottom: 12px; }
+    .section-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 0.875rem; color: #374151; }
+    .section-row.total { font-weight: 700; font-size: 1rem; color: #111827; border-top: 1px solid #F3F4F6; padding-top: 12px; margin-top: 4px; }
 
-                        <form action="{{ route('pelanggan.checkout') }}" method="POST" id="checkoutForm">
-                            @csrf
-                            <input type="hidden" name="total" value="{{ $total }}">
-                            <input type="hidden" name="metode_pembayaran" value="Qris">
-                            
-                            <button type="submit" class="btn btn-success btn-lg w-100 py-3">
-                                <i class="fas fa-check-circle me-2"></i>Checkout Sekarang
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            @else
-                <!-- Empty Cart -->
-                <div class="card border-0 shadow-sm text-center py-5" style="border-radius: 15px;">
-                    <div class="card-body">
-                        <i class="fas fa-shopping-cart fa-5x text-muted mb-3 opacity-25"></i>
-                        <h4 class="text-muted mb-3">Keranjang Belanja Kosong</h4>
-                        <p class="text-muted mb-4">Mulai belanja untuk menambahkan produk ke keranjang</p>
-                        <a href="{{ route('pelanggan.shop') }}" class="btn btn-primary btn-lg">
-                            <i class="fas fa-store me-2"></i>Mulai Belanja
-                        </a>
-                    </div>
-                </div>
-            @endif
-        </div>
+    .payment-method-btn {
+        display: flex; align-items: center; justify-content: space-between;
+        background: #F0FDF4;
+        border: 1.5px solid #00880F;
+        border-radius: 10px;
+        padding: 12px 16px;
+        cursor: pointer;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #005F0A;
+        font-size: 0.9rem;
+    }
+    .payment-method-btn.inactive {
+        background: white;
+        border-color: #E5E7EB;
+        color: #374151;
+    }
+
+    .sticky-checkout {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        background: white;
+        padding: 12px 20px;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+        z-index: 200;
+    }
+    .checkout-btn {
+        background: #00880F;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 14px 20px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 700;
+        font-size: 0.95rem;
+    }
+    .checkout-btn-left { display: flex; align-items: center; gap: 12px; }
+    .checkout-count {
+        background: rgba(255,255,255,0.2);
+        border-radius: 6px;
+        padding: 2px 8px;
+        font-size: 0.85rem;
+    }
+</style>
+
+<!-- Header -->
+<div class="cart-header">
+    <a href="{{ route('pelanggan.shop') }}" class="cart-header-back">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <span class="cart-header-title">Keranjang</span>
+</div>
+
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show mx-3 mt-2" role="alert" style="font-size: 0.85rem;">
+    <i class="fas fa-check-circle me-1"></i>{{ session('success') }}
+    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>
+</div>
+@endif
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show mx-3 mt-2" role="alert" style="font-size: 0.85rem;">
+    <i class="fas fa-exclamation-circle me-1"></i>{{ session('error') }}
+    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>
+</div>
+@endif
+
+@if($cart && count($cart) > 0)
+
+<!-- Store Info -->
+<div class="store-info-bar">
+    <div class="store-icon">
+        <img src="{{ Storage::url('logo.jpg') }}" alt="Logo">
+    </div>
+    <div>
+        <div class="store-name">Kembang Tahu Pak Ujang</div>
+        <div class="store-sub">Khas Panambangan</div>
     </div>
 </div>
 
-<style>
-.cart-item {
-    transition: all 0.3s ease;
-}
+<!-- Cart Items -->
+<div style="background: white;">
+    @foreach($cart as $productId => $item)
+    @php $subtotal = $item['harga'] * $item['quantity']; @endphp
+    <div class="cart-item-row">
+        @if(isset($item['gambar']) && $item['gambar'])
+            <img src="{{ Storage::url($item['gambar']) }}" class="cart-item-img" alt="{{ $item['nama'] }}">
+        @else
+            <div class="cart-item-img d-flex align-items-center justify-content-center text-muted" style="background: #F3F4F6;">
+                <i class="fas fa-image fa-lg"></i>
+            </div>
+        @endif
 
-.cart-item:hover {
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding-left: 10px;
-}
+        <div class="flex-grow-1">
+            <div style="font-weight: 700; font-size: 0.95rem; color: #111827; margin-bottom: 2px;">{{ $item['nama'] }}</div>
+            <div style="font-size: 0.8rem; color: #6B7280; margin-bottom: 8px;">Rp {{ number_format($item['harga'], 0, ',', '.') }}</div>
+            
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="qty-control">
+                    <!-- Minus / Remove -->
+                    @if($item['quantity'] <= 1)
+                    <form action="{{ route('pelanggan.cart.remove', $productId) }}" method="POST" class="m-0">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="qty-btn" style="border-color: #EF4444; color: #EF4444;">
+                            <i class="fas fa-trash-alt" style="font-size: 0.7rem;"></i>
+                        </button>
+                    </form>
+                    @else
+                    <form action="{{ route('pelanggan.cart.update', $productId) }}" method="POST" class="m-0">
+                        @csrf
+                        <input type="hidden" name="quantity" value="{{ $item['quantity'] - 1 }}">
+                        <button type="submit" class="qty-btn"><i class="fas fa-minus" style="font-size: 0.7rem;"></i></button>
+                    </form>
+                    @endif
 
-.btn-outline-secondary:hover {
-    background: #6c757d;
-    color: white;
-}
+                    <span class="qty-num">{{ $item['quantity'] }}</span>
 
-.qrcode-container {
-    animation: fadeIn 0.5s ease-in-out;
-}
+                    <!-- Plus -->
+                    <form action="{{ route('pelanggan.cart.update', $productId) }}" method="POST" class="m-0">
+                        @csrf
+                        <input type="hidden" name="quantity" value="{{ $item['quantity'] + 1 }}">
+                        <button type="submit" class="qty-btn"><i class="fas fa-plus" style="font-size: 0.7rem;"></i></button>
+                    </form>
+                </div>
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+                <div style="font-weight: 700; color: #111827; font-size: 0.95rem;">
+                    Rp {{ number_format($subtotal, 0, ',', '.') }}
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
+</div>
+
+<!-- Metode Pembayaran -->
+<div class="section-card">
+    <div class="section-title">Metode Pembayaran</div>
+    <label class="payment-method-btn" onclick="selectPayment('Qris', this)">
+        <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-qrcode" style="color: #00880F;"></i> QRIS
+        </div>
+        <i class="fas fa-check-circle" style="color: #00880F;"></i>
+    </label>
+    <label class="payment-method-btn inactive" onclick="selectPayment('Tunai', this)">
+        <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-money-bill-wave" style="color: #6B7280;"></i> Tunai
+        </div>
+        <i class="far fa-circle" style="color: #D1D5DB;"></i>
+    </label>
+</div>
+
+<!-- Ringkasan Harga -->
+<div class="section-card mb-4">
+    <div class="section-title">Ringkasan Pesanan</div>
+    @foreach($cart as $item)
+    <div class="section-row">
+        <span>{{ $item['nama'] }} × {{ $item['quantity'] }}</span>
+        <span>Rp {{ number_format($item['harga'] * $item['quantity'], 0, ',', '.') }}</span>
+    </div>
+    @endforeach
+    <div class="section-row total">
+        <span>Total Pembayaran</span>
+        <span style="color: #00880F;">Rp {{ number_format($total, 0, ',', '.') }}</span>
+    </div>
+</div>
+
+<!-- Sticky Checkout Button -->
+<form action="{{ route('pelanggan.checkout') }}" method="POST" id="checkoutForm">
+    @csrf
+    <input type="hidden" name="total" value="{{ $total }}">
+    <input type="hidden" name="metode_pembayaran" id="metode_pembayaran" value="Qris">
+    
+    <div class="sticky-checkout">
+        <button type="submit" class="checkout-btn">
+            <div class="checkout-btn-left">
+                <span class="checkout-count">{{ $cartCount }} item</span>
+                <span>Pesan Sekarang</span>
+            </div>
+            <span>Rp {{ number_format($total, 0, ',', '.') }}</span>
+        </button>
+    </div>
+</form>
+
+@else
+<!-- Empty Cart -->
+<div class="d-flex flex-column align-items-center justify-content-center" style="height: 70vh; text-align: center; padding: 20px;">
+    <div style="font-size: 5rem; margin-bottom: 16px; opacity: 0.2;">🛒</div>
+    <div style="font-weight: 700; font-size: 1.1rem; color: #111827; margin-bottom: 8px;">Keranjang Kosong</div>
+    <div style="font-size: 0.85rem; color: #6B7280; margin-bottom: 24px;">Mulai tambahkan menu yang kamu suka!</div>
+    <a href="{{ route('pelanggan.shop') }}" class="btn btn-success rounded-pill px-4 fw-bold" style="background: #00880F; border: none;">
+        Lihat Menu
+    </a>
+</div>
+@endif
+
+<script>
+function selectPayment(method, el) {
+    document.getElementById('metode_pembayaran').value = method;
+    document.querySelectorAll('.payment-method-btn').forEach(btn => {
+        btn.classList.add('inactive');
+        btn.querySelector('i:last-child').className = 'far fa-circle';
+        btn.querySelector('i:last-child').style.color = '#D1D5DB';
+    });
+    el.classList.remove('inactive');
+    el.querySelector('i:last-child').className = 'fas fa-check-circle';
+    el.querySelector('i:last-child').style.color = '#00880F';
 }
-</style>
+</script>
 @endsection
