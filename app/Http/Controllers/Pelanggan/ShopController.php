@@ -117,7 +117,7 @@ class ShopController extends Controller
     public function checkout(Request $request)
     {
         $request->validate([
-            'metode_pembayaran' => 'required|in:Tunai,Qris',
+            'metode_pembayaran' => 'required|in:Tunai,Qris,tunai,qris',
             'total' => 'required|numeric|min:0'
         ]);
 
@@ -134,7 +134,7 @@ class ShopController extends Controller
                 'kode_transaksi' => 'TRX-' . date('Ymd') . '-' . str_pad(Transaction::count() + 1, 4, '0', STR_PAD_LEFT),
                 'user_id' => auth()->id() ?? null,
                 'total' => $request->total,
-                'metode_pembayaran' => $request->metode_pembayaran,
+                'metode_pembayaran' => strtolower($request->metode_pembayaran),
                 'tanggal_transaksi' => now(),
                 'status' => 'pending',
             ]);
