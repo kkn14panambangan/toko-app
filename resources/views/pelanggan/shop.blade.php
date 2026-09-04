@@ -343,7 +343,7 @@
 </div>
 
 <!-- Product Detail Offcanvas -->
-<div class="offcanvas offcanvas-bottom d-flex flex-column" tabindex="-1" id="productDetailModal" style="height: 90vh; border-top-left-radius: 20px; border-top-right-radius: 20px;">
+<div class="offcanvas offcanvas-bottom d-flex flex-column" tabindex="-1" id="productDetailModal" style="height: auto; max-height: 90vh; border-top-left-radius: 20px; border-top-right-radius: 20px;">
     <!-- Pull Indicator & Close -->
     <div class="text-center pt-2 pb-1 position-relative bg-white" style="border-top-left-radius: 20px; border-top-right-radius: 20px;">
         <div style="width: 40px; height: 4px; background: #E5E7EB; border-radius: 2px; margin: 0 auto;"></div>
