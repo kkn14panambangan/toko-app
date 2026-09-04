@@ -217,4 +217,79 @@ class ShopController extends Controller
         
         return back()->with('success', '✅ Profil berhasil diperbarui!');
     }
+
+    // ==========================================
+    // AJAX CART METHODS
+    // ==========================================
+
+    public function ajaxAddToCart(Request $request)
+    {
+        $request->validate(['product_id' => 'required|exists:products,id']);
+        $product = Product::findOrFail($request->product_id);
+
+        if ($product->stok <= 0) {
+            return response()->json(['success' => false, 'message' => 'Stok habis']);
+        }
+
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$request->product_id])) {
+            $cart[$request->product_id]['quantity'] += 1;
+        } else {
+            $cart[$request->product_id] = [
+                'nama'     => $product->nama_produk,
+                'harga'    => $product->harga,
+                'quantity' => 1,
+                'gambar'   => $product->gambar,
+            ];
+        }
+
+        session()->put('cart', $cart);
+        $cartTotal = collect($cart)->sum(fn($i) => $i['harga'] * $i['quantity']);
+        $cartCount = collect($cart)->sum('quantity');
+
+        return response()->json([
+            'success'   => true,
+            'quantity'  => $cart[$request->product_id]['quantity'],
+            'cartCount' => $cartCount,
+            'cartTotal' => number_format($cartTotal, 0, ',', '.'),
+        ]);
+    }
+
+    public function ajaxUpdateCart(Request $request, $id)
+    {
+        $cart = session()->get('cart', []);
+        if (!isset($cart[$id])) {
+            return response()->json(['success' => false]);
+        }
+
+        $qty = (int) $request->quantity;
+        if ($qty <= 0) {
+            unset($cart[$id]);
+        } else {
+            $cart[$id]['quantity'] = $qty;
+        }
+
+        session()->put('cart', $cart);
+        $cartTotal = collect($cart)->sum(fn($i) => $i['harga'] * $i['quantity']);
+        $cartCount = collect($cart)->sum('quantity');
+
+        return response()->json([
+            'success'   => true,
+            'quantity'  => $qty,
+            'cartCount' => $cartCount,
+            'cartTotal' => number_format($cartTotal, 0, ',', '.'),
+        ]);
+    }
+
+    public function ajaxCartStatus()
+    {
+        $cart = session()->get('cart', []);
+        $cartTotal = collect($cart)->sum(fn($i) => $i['harga'] * $i['quantity']);
+        $cartCount = collect($cart)->sum('quantity');
+        return response()->json([
+            'cartCount' => $cartCount,
+            'cartTotal' => number_format($cartTotal, 0, ',', '.'),
+        ]);
+    }
 }

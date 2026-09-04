@@ -33,10 +33,13 @@ Route::prefix('pelanggan')->name('pelanggan.')->group(function () {
     Route::post('/checkout', [ShopController::class, 'checkout'])->name('checkout');
     Route::get('/checkout/success/{id}', [ShopController::class, 'checkoutSuccess'])->name('checkout.success');
     Route::get('/history', [ShopController::class, 'history'])->name('history');
-    
-    // ✅ ROUTE PROFIL - TAMBAHKAN INI
     Route::get('/profile', [ShopController::class, 'profile'])->name('profile');
     Route::put('/profile', [ShopController::class, 'updateProfile'])->name('profile.update');
+
+    // AJAX Cart API
+    Route::post('/api/cart/add', [ShopController::class, 'ajaxAddToCart'])->name('api.cart.add');
+    Route::post('/api/cart/update/{id}', [ShopController::class, 'ajaxUpdateCart'])->name('api.cart.update');
+    Route::get('/api/cart/status', [ShopController::class, 'ajaxCartStatus'])->name('api.cart.status');
 });
 
 // ==========================================

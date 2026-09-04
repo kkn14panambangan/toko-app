@@ -200,6 +200,43 @@
         box-shadow: none;
     }
 
+    /* Grab Qty Control */
+    .cart-ctrl-wrapper {
+        position: absolute;
+        bottom: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+    }
+    .grab-qty-ctrl {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: white;
+        border: 1.5px solid #00B14F;
+        border-radius: 20px;
+        padding: 3px 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        white-space: nowrap;
+    }
+    .grab-qty-btn {
+        background: none;
+        border: none;
+        color: #00880F;
+        font-weight: 800;
+        font-size: 1rem;
+        line-height: 1;
+        padding: 0 2px;
+        cursor: pointer;
+    }
+    .grab-qty-num {
+        font-weight: 700;
+        color: #111827;
+        font-size: 0.85rem;
+        min-width: 16px;
+        text-align: center;
+    }
+
     /* Floating Red Menu Button */
     .floating-menu-btn {
         position: fixed;
@@ -291,15 +328,23 @@
                             <i class="fas fa-image fa-2x"></i>
                         </div>
                     @endif
-                    
-                    <form action="{{ route('pelanggan.cart.add') }}" method="POST" class="m-0">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <input type="hidden" name="quantity" value="1">
-                        <button type="submit" class="grab-btn-add" {{ $product->stok <= 0 ? 'disabled' : '' }}>
-                            {{ $product->stok <= 0 ? 'Habis' : 'Tambah' }}
-                        </button>
-                    </form>
+
+                    @php $inCart = isset($sessionCart[$product->id]) ? $sessionCart[$product->id]['quantity'] : 0; @endphp
+
+                    <!-- Cart Control -->
+                    <div id="ctrl-{{ $product->id }}" class="cart-ctrl-wrapper">
+                        @if($product->stok <= 0)
+                            <button class="grab-btn-add" disabled>Habis</button>
+                        @elseif($inCart > 0)
+                            <div class="grab-qty-ctrl">
+                                <button class="grab-qty-btn" onclick="updateQty('{{ $product->id }}', {{ $inCart - 1 }}, this)">−</button>
+                                <span class="grab-qty-num" id="qty-{{ $product->id }}">{{ $inCart }}</span>
+                                <button class="grab-qty-btn" onclick="updateQty('{{ $product->id }}', {{ $inCart + 1 }}, this)">+</button>
+                            </div>
+                        @else
+                            <button class="grab-btn-add" onclick="addToCart('{{ $product->id }}', this)">Tambah</button>
+                        @endif
+                    </div>
                 </div>
             </div>
             @endforeach
@@ -381,7 +426,88 @@
     </div>
 </div>
 
+
+<a href="{{ route('pelanggan.cart') }}" class="text-decoration-none" id="cart-bar" style="display: {{ $cartCount > 0 ? 'block' : 'none' }};">
+    <div style="position: fixed; bottom: 0; left: 0; right: 0; background: #00880F; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; z-index: 1040; box-shadow: 0 -4px 12px rgba(0,0,0,0.15);">
+        <div class="d-flex align-items-center gap-3">
+            <div id="cart-count-badge" style="background: rgba(255,255,255,0.2); border-radius: 8px; padding: 4px 10px; font-weight: 700; color: white; font-size: 0.9rem;">
+                {{ $cartCount }} item
+            </div>
+            <span style="color: rgba(255,255,255,0.85); font-size: 0.8rem;">Lihat keranjang</span>
+        </div>
+        <div style="color: white; font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 8px;">
+            <span id="cart-total-label">Rp {{ number_format($cartTotal, 0, ',', '.') }}</span>
+            <i class="fas fa-shopping-basket" style="background: white; color: #00880F; padding: 6px 8px; border-radius: 8px; font-size: 0.9rem;"></i>
+        </div>
+    </div>
+</a>
+
 <script>
+const CSRF = document.querySelector('meta[name=csrf-token]')?.content || '{{ csrf_token() }}';
+const ADD_URL = '{{ route("pelanggan.api.cart.add") }}';
+const UPDATE_BASE = '{{ url("pelanggan/api/cart/update") }}';
+
+function updateCartBar(count, total) {
+    const bar = document.getElementById('cart-bar');
+    if (count > 0) {
+        bar.style.display = 'block';
+        document.getElementById('cart-count-badge').innerText = count + ' item';
+        document.getElementById('cart-total-label').innerText = 'Rp ' + total;
+    } else {
+        bar.style.display = 'none';
+    }
+}
+
+function addToCart(productId, btn) {
+    btn.disabled = true;
+    btn.innerText = '...';
+    fetch(ADD_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF },
+        body: JSON.stringify({ product_id: productId })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            // Render qty control
+            const ctrl = document.getElementById('ctrl-' + productId);
+            ctrl.innerHTML = `
+                <div class="grab-qty-ctrl">
+                    <button class="grab-qty-btn" onclick="updateQty('${productId}', ${data.quantity - 1}, this)">−</button>
+                    <span class="grab-qty-num" id="qty-${productId}">${data.quantity}</span>
+                    <button class="grab-qty-btn" onclick="updateQty('${productId}', ${data.quantity + 1}, this)">+</button>
+                </div>`;
+            updateCartBar(data.cartCount, data.cartTotal);
+        }
+    })
+    .catch(() => { btn.disabled = false; btn.innerText = 'Tambah'; });
+}
+
+function updateQty(productId, newQty, btn) {
+    btn.disabled = true;
+    fetch(UPDATE_BASE + '/' + productId, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF },
+        body: JSON.stringify({ quantity: newQty })
+    })
+    .then(r => r.json())
+    .then(data => {
+        btn.disabled = false;
+        const ctrl = document.getElementById('ctrl-' + productId);
+        if (newQty <= 0) {
+            ctrl.innerHTML = `<button class="grab-btn-add" onclick="addToCart('${productId}', this)">Tambah</button>`;
+        } else {
+            document.getElementById('qty-' + productId).innerText = newQty;
+            // Update the onclick values
+            const btns = ctrl.querySelectorAll('.grab-qty-btn');
+            btns[0].setAttribute('onclick', `updateQty('${productId}', ${newQty - 1}, this)`);
+            btns[1].setAttribute('onclick', `updateQty('${productId}', ${newQty + 1}, this)`);
+        }
+        updateCartBar(data.cartCount, data.cartTotal);
+    })
+    .catch(() => { btn.disabled = false; });
+}
+
 // Open Product Detail Modal
 function openProductDetail(id, title, desc, price, img) {
     document.getElementById('detail-id').value = id;
@@ -412,29 +538,4 @@ document.querySelectorAll('.grab-toggle-btn').forEach(btn => {
     });
 });
 </script>
-
-@php
-    $cart = session()->get('cart', []);
-    $cartTotal = collect($cart)->sum(fn($item) => $item['harga'] * $item['quantity']);
-    $cartCount = collect($cart)->sum('quantity');
-@endphp
-
-@if($cartCount > 0)
-<!-- Sticky Cart Bar (GrabFood Style) -->
-<a href="{{ route('pelanggan.cart') }}" class="text-decoration-none" id="cart-bar">
-    <div style="position: fixed; bottom: 0; left: 0; right: 0; background: #00880F; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; z-index: 1040; box-shadow: 0 -4px 12px rgba(0,0,0,0.15);">
-        <div class="d-flex align-items-center gap-3">
-            <div style="background: rgba(255,255,255,0.2); border-radius: 8px; padding: 4px 10px; font-weight: 700; color: white; font-size: 0.9rem;">
-                {{ $cartCount }} item
-            </div>
-            <span style="color: rgba(255,255,255,0.85); font-size: 0.8rem;">Lihat keranjang</span>
-        </div>
-        <div style="color: white; font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 8px;">
-            Rp {{ number_format($cartTotal, 0, ',', '.') }}
-            <i class="fas fa-shopping-basket" style="background: white; color: #00880F; padding: 6px 8px; border-radius: 8px; font-size: 0.9rem;"></i>
-        </div>
-    </div>
-</a>
-@endif
-
 @endsection
