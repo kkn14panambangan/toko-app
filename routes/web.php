@@ -79,3 +79,11 @@ Route::get('/setup-db-2026', function() {
     \Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
     return "Database has been refreshed and seeded successfully.";
 });
+
+Route::get('/update-product-info', function() {
+    \App\Models\Product::where('id', '>', 0)->update([
+        'nama_produk' => 'Kembang Tahu',
+        'deskripsi' => 'Bisa dikondisikan sesuai request pembeli. Per 1 porsi.'
+    ]);
+    return "Updated";
+});

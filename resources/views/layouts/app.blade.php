@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Kembang Tahu Pak Ujang')</title>
+    <title>@yield('title', 'Kembang Tahu 65 Bapak Ujang')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -16,7 +16,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
     <div class="container">
         <a class="navbar-brand fw-bold text-dark" href="{{ route('home') }}">
-            <i class="fas fa-store me-2 text-danger"></i>Kembang Tahu Pak Ujang
+            <i class="fas fa-store me-2 text-danger"></i>Kembang Tahu 65 Bapak Ujang
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -63,7 +63,7 @@
     <!-- Footer (Hide on mobile since bottom nav takes over) -->
     <footer class="bg-white text-muted text-center py-4 mt-auto d-none d-md-block border-top">
         <div class="container">
-            <p class="mb-0">&copy; {{ date('Y') }} Kembang Tahu Pak Ujang</p>
+            <p class="mb-0">&copy; {{ date('Y') }} Kembang Tahu 65 Bapak Ujang</p>
         </div>
     </footer>
 
