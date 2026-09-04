@@ -200,7 +200,7 @@
                     <!-- Minus / Remove -->
                     @if($item['quantity'] <= 1)
                     <form action="{{ route('pelanggan.cart.remove', $productId) }}" method="POST" class="m-0">
-                        @csrf @method('DELETE')
+                        @csrf
                         <button type="submit" class="qty-btn" style="border-color: #EF4444; color: #EF4444;">
                             <i class="fas fa-trash-alt" style="font-size: 0.7rem;"></i>
                         </button>
