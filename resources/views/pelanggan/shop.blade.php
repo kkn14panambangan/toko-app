@@ -268,10 +268,15 @@
     }
 
     /* Floating WhatsApp Button */
-    .floating-wa-btn {
+    #waContainer {
         position: fixed;
-        bottom: 95px; /* Adjusted to avoid overlap with Menu & Cart */
+        bottom: 95px;
         right: 20px;
+        z-index: 1050;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .floating-wa-btn {
         background-color: #25D366;
         color: white;
         border-radius: 50%;
@@ -282,10 +287,9 @@
         justify-content: center;
         font-size: 2rem;
         box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
-        z-index: 1050;
         text-decoration: none;
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         animation: pulse-wa 2s infinite;
+        transition: all 0.2s;
     }
 
     .floating-wa-btn:hover {
@@ -514,9 +518,11 @@
     </div>
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/6282213066810" target="_blank" class="floating-wa-btn" id="floatingWaBtn">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <div id="waContainer">
+        <a href="https://wa.me/6282213066810" target="_blank" class="floating-wa-btn" id="floatingWaBtn">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
 </div>
 
 
@@ -681,6 +687,7 @@ function addDetailToCart(btn) {
 
 // Make WA Button Draggable and Save Position
 document.addEventListener('DOMContentLoaded', function() {
+    const waContainer = document.getElementById('waContainer');
     const waBtn = document.getElementById('floatingWaBtn');
     let isDragging = false;
     let currentX = 0, currentY = 0, initialX, initialY;
@@ -694,8 +701,8 @@ document.addEventListener('DOMContentLoaded', function() {
         currentY = parseFloat(savedY);
         xOffset = currentX;
         yOffset = currentY;
-        waBtn.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
-        waBtn.style.animation = 'none'; // Prevent pulse animation from resetting transform
+        waContainer.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+        waContainer.style.transition = 'none'; // Don't animate initial placement
     }
 
     function dragStart(e) {
@@ -706,10 +713,9 @@ document.addEventListener('DOMContentLoaded', function() {
             initialX = e.clientX - xOffset;
             initialY = e.clientY - yOffset;
         }
-        if (e.target === waBtn || waBtn.contains(e.target)) {
+        if (e.target === waBtn || waBtn.contains(e.target) || e.target === waContainer) {
             isDragging = true;
-            waBtn.style.transition = 'none'; // Disable transition for smooth dragging
-            waBtn.style.animation = 'none'; // Disable pulse animation
+            waContainer.style.transition = 'none'; // Disable transition for smooth dragging
         }
     }
 
@@ -722,9 +728,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Save position to localStorage
         localStorage.setItem('waBtnPosX', currentX);
         localStorage.setItem('waBtnPosY', currentY);
-        
-        // Restore transition after drag is done
-        waBtn.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
     }
 
     function drag(e) {
@@ -739,13 +742,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             xOffset = currentX;
             yOffset = currentY;
-            waBtn.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+            waContainer.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
         }
     }
 
     let startClickTime = 0;
-    waBtn.addEventListener('mousedown', (e) => { startClickTime = Date.now(); dragStart(e); });
-    waBtn.addEventListener('touchstart', (e) => { startClickTime = Date.now(); dragStart(e); }, { passive: false });
+    waContainer.addEventListener('mousedown', (e) => { startClickTime = Date.now(); dragStart(e); });
+    waContainer.addEventListener('touchstart', (e) => { startClickTime = Date.now(); dragStart(e); }, { passive: false });
 
     document.addEventListener('mouseup', dragEnd);
     document.addEventListener('touchend', dragEnd);
