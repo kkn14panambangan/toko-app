@@ -679,12 +679,24 @@ function addDetailToCart(btn) {
     .catch(() => { btn.disabled = false; btn.innerText = origText; });
 }
 
-// Make WA Button Draggable
+// Make WA Button Draggable and Save Position
 document.addEventListener('DOMContentLoaded', function() {
     const waBtn = document.getElementById('floatingWaBtn');
     let isDragging = false;
     let currentX = 0, currentY = 0, initialX, initialY;
     let xOffset = 0, yOffset = 0;
+
+    // Load saved position
+    const savedX = localStorage.getItem('waBtnPosX');
+    const savedY = localStorage.getItem('waBtnPosY');
+    if (savedX !== null && savedY !== null) {
+        currentX = parseFloat(savedX);
+        currentY = parseFloat(savedY);
+        xOffset = currentX;
+        yOffset = currentY;
+        waBtn.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+        waBtn.style.animation = 'none'; // Prevent pulse animation from resetting transform
+    }
 
     function dragStart(e) {
         if (e.type === 'touchstart') {
@@ -706,6 +718,13 @@ document.addEventListener('DOMContentLoaded', function() {
         initialX = currentX;
         initialY = currentY;
         isDragging = false;
+        
+        // Save position to localStorage
+        localStorage.setItem('waBtnPosX', currentX);
+        localStorage.setItem('waBtnPosY', currentY);
+        
+        // Restore transition after drag is done
+        waBtn.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
     }
 
     function drag(e) {
