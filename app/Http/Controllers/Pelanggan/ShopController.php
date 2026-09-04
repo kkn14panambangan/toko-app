@@ -156,6 +156,10 @@ class ShopController extends Controller
             session()->forget('cart');
             DB::commit();
 
+            if (strtolower($request->metode_pembayaran) === 'qris') {
+                return redirect()->route('pelanggan.checkout.qris', $transaction->id);
+            }
+
             return redirect()->route('pelanggan.checkout.success', $transaction->id)
                            ->with('success', 'Transaksi berhasil!');
                        
@@ -163,6 +167,20 @@ class ShopController extends Controller
             DB::rollBack();
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Halaman QRIS
+     */
+    public function checkoutQris($id)
+    {
+        $transaction = Transaction::with(['items.product'])->findOrFail($id);
+        
+        if ($transaction->status != 'pending' || strtolower($transaction->metode_pembayaran) != 'qris') {
+            return redirect()->route('pelanggan.checkout.success', $id);
+        }
+        
+        return view('pelanggan.checkout-qris', compact('transaction'));
     }
 
     /**

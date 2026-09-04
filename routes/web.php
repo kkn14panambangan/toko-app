@@ -31,6 +31,7 @@ Route::prefix('pelanggan')->name('pelanggan.')->group(function () {
     Route::post('/cart/update/{id}', [ShopController::class, 'updateCart'])->name('cart.update');
     Route::post('/cart/remove/{id}', [ShopController::class, 'removeFromCart'])->name('cart.remove');
     Route::post('/checkout', [ShopController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout/{id}/qris', [ShopController::class, 'checkoutQris'])->name('checkout.qris');
     Route::get('/checkout/success/{id}', [ShopController::class, 'checkoutSuccess'])->name('checkout.success');
     Route::get('/history', [ShopController::class, 'history'])->name('history');
     Route::get('/profile', [ShopController::class, 'profile'])->name('profile');
