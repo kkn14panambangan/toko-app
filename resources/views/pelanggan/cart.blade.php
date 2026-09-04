@@ -239,13 +239,13 @@
         <div class="d-flex align-items-center gap-2">
             <i class="fas fa-qrcode" style="color: #00880F;"></i> QRIS
         </div>
-        <i class="fas fa-check-circle" style="color: #00880F;"></i>
+        <i class="fas fa-check-circle check-icon" style="color: #00880F;"></i>
     </label>
     <label class="payment-method-btn inactive" onclick="selectPayment('Tunai', this)">
         <div class="d-flex align-items-center gap-2">
             <i class="fas fa-money-bill-wave" style="color: #6B7280;"></i> Tunai
         </div>
-        <i class="far fa-circle" style="color: #D1D5DB;"></i>
+        <i class="far fa-circle check-icon" style="color: #D1D5DB;"></i>
     </label>
 </div>
 
@@ -298,12 +298,12 @@ function selectPayment(method, el) {
     document.getElementById('metode_pembayaran').value = method;
     document.querySelectorAll('.payment-method-btn').forEach(btn => {
         btn.classList.add('inactive');
-        btn.querySelector('i:last-child').className = 'far fa-circle';
-        btn.querySelector('i:last-child').style.color = '#D1D5DB';
+        btn.querySelector('.check-icon').className = 'far fa-circle check-icon';
+        btn.querySelector('.check-icon').style.color = '#D1D5DB';
     });
     el.classList.remove('inactive');
-    el.querySelector('i:last-child').className = 'fas fa-check-circle';
-    el.querySelector('i:last-child').style.color = '#00880F';
+    el.querySelector('.check-icon').className = 'fas fa-check-circle check-icon';
+    el.querySelector('.check-icon').style.color = '#00880F';
 }
 </script>
 @endsection
