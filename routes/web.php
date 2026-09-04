@@ -79,10 +79,3 @@ Route::get('/setup-db-2026', function() {
     \Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
     return "Database has been refreshed and seeded successfully.";
 });
-
-Route::get('/update-product-image', function() {
-    \App\Models\Product::where('id', '>', 0)->update([
-        'gambar' => 'menu.jpg'
-    ]);
-    return "Image Updated";
-});
