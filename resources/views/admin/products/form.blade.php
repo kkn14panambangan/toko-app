@@ -89,7 +89,7 @@
                                         Foto saat ini:
                                     </p>
                                     <div class="position-relative d-inline-block">
-                                        <img src="{{ asset('storage/' . $product->gambar) }}" 
+                                        <img src="{{ Storage::url($product->gambar) }}" 
                                              alt="Foto Produk" 
                                              class="img-thumbnail" 
                                              style="max-width: 200px; max-height: 200px; object-fit: cover;"

@@ -34,7 +34,7 @@ class ProductController extends Controller
         if ($request->hasFile('gambar')) {
             $file = $request->file('gambar');
             $namaFile = time() . '_' . $file->getClientOriginalName();
-            $validated['gambar'] = $file->storeAs('products', $namaFile, 'public');
+            $validated['gambar'] = $file->storeAs('products', $namaFile, 's3');
         }
 
         Product::create($validated);
@@ -63,18 +63,15 @@ class ProductController extends Controller
 
         // PERBAIKAN 2: Logika hapus & upload yang lebih aman untuk Windows
         if ($request->hasFile('gambar')) {
-            // 1. Hapus foto lama secara langsung dari folder public/storage
-            if ($product->gambar) {
-                $pathLama = public_path('storage/' . $product->gambar);
-                if (file_exists($pathLama)) {
-                    unlink($pathLama); // Hapus file fisik
-                }
+            // 1. Hapus foto lama dari S3
+            if ($product->gambar && \Illuminate\Support\Facades\Storage::disk('s3')->exists($product->gambar)) {
+                \Illuminate\Support\Facades\Storage::disk('s3')->delete($product->gambar);
             }
             
             // 2. Simpan foto baru dengan nama unik
             $file = $request->file('gambar');
             $namaFile = time() . '_' . $file->getClientOriginalName();
-            $validated['gambar'] = $file->storeAs('products', $namaFile, 'public');
+            $validated['gambar'] = $file->storeAs('products', $namaFile, 's3');
         }
 
         $product->update($validated);
@@ -86,12 +83,9 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        // PERBAIKAN 3: Hapus foto saat produk dihapus
-        if ($product->gambar) {
-            $pathLama = public_path('storage/' . $product->gambar);
-            if (file_exists($pathLama)) {
-                unlink($pathLama);
-            }
+        // PERBAIKAN 3: Hapus foto saat produk dihapus dari S3
+        if ($product->gambar && \Illuminate\Support\Facades\Storage::disk('s3')->exists($product->gambar)) {
+            \Illuminate\Support\Facades\Storage::disk('s3')->delete($product->gambar);
         }
 
         $product->delete();

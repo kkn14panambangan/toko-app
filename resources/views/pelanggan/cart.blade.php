@@ -42,7 +42,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-2">
                                         @if(isset($item['gambar']) && $item['gambar'])
-                                            <img src="{{ asset('storage/' . $item['gambar']) }}" 
+                                            <img src="{{ Storage::url($item['gambar']) }}" 
                                                  class="img-fluid rounded" 
                                                  alt="{{ $item['nama'] }}"
                                                  style="width: 80px; height: 80px; object-fit: cover;">

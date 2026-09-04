@@ -3,7 +3,7 @@
 @section('content')
 <!-- Hero Banner -->
 <div class="position-relative overflow-hidden">
-    <div class="text-white py-5 position-relative" style="background: url('{{ asset('storage/logo.jpg') }}') center/cover no-repeat;">
+    <div class="text-white py-5 position-relative" style="background: url('{{ Storage::url('logo.jpg') }}') center/cover no-repeat;">
         <!-- Overlay -->
         <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0, 0, 0, 0.7);"></div>
         
@@ -90,7 +90,7 @@
             <div class="card product-card h-100 border-0 shadow-sm">
                 <div class="position-relative overflow-hidden" style="height: 220px; background: #f8f9fa;">
                     @if($product->gambar)
-                        <img src="{{ asset('storage/' . $product->gambar) }}" 
+                        <img src="{{ Storage::url($product->gambar) }}" 
                              class="card-img-top h-100 w-100" 
                              style="object-fit: cover;" 
                              alt="{{ $product->nama_produk }}">

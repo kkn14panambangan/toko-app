@@ -42,7 +42,7 @@
                             <td>
                                 <div class="d-flex align-items-center">
                                     @if($product->gambar)
-                                        <img src="{{ asset('storage/' . $product->gambar) }}" 
+                                        <img src="{{ Storage::url($product->gambar) }}" 
                                              alt="{{ $product->nama_produk }}" 
                                              class="img-thumbnail me-2" 
                                              style="width: 60px; height: 60px; object-fit: cover;">

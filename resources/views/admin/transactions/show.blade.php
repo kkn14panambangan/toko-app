@@ -151,7 +151,7 @@
                             <div class="row align-items-center">
                                 <div class="col-md-2">
                                     @if($item->product && $item->product->gambar)
-                                        <img src="{{ asset('storage/' . $item->product->gambar) }}" class="img-fluid rounded" style="width: 70px; height: 70px; object-fit: cover;">
+                                        <img src="{{ Storage::url($item->product->gambar) }}" class="img-fluid rounded" style="width: 70px; height: 70px; object-fit: cover;">
                                     @else
                                         <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
                                             <i class="fas fa-image text-muted fa-2x"></i>

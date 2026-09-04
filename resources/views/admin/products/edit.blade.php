@@ -73,7 +73,7 @@
                         <div class="mb-3">
                             <label class="form-label">Gambar Saat Ini</label>
                             <div>
-                                <img src="{{ asset('storage/' . $product->gambar) }}" 
+                                <img src="{{ Storage::url($product->gambar) }}" 
                                      alt="{{ $product->nama }}" 
                                      class="img-thumbnail" 
                                      style="max-width: 200px; max-height: 200px;">
