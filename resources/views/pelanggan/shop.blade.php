@@ -411,23 +411,30 @@
             <h4 id="detail-price" class="fw-bold mb-4" style="font-size: 1.1rem;"></h4>
             
             <div class="d-flex justify-content-between gap-2 mb-2">
-                <button class="btn btn-outline-secondary rounded-pill btn-sm flex-fill fw-bold d-flex align-items-center justify-content-center border" style="font-size: 0.8rem; color: #4B5563;"><i class="far fa-heart me-2 fs-6"></i> Simpan</button>
-                <button class="btn btn-outline-secondary rounded-pill btn-sm flex-fill fw-bold d-flex align-items-center justify-content-center border" style="font-size: 0.8rem; color: #4B5563;"><i class="fas fa-exclamation-circle me-2 fs-6"></i> Lapor</button>
-                <button class="btn btn-outline-secondary rounded-pill btn-sm flex-fill fw-bold d-flex align-items-center justify-content-center border" style="font-size: 0.8rem; color: #4B5563;"><i class="fas fa-share-alt me-2 fs-6"></i> Bagikan</button>
+                <button type="button" class="btn btn-outline-secondary rounded-pill btn-sm flex-fill fw-bold d-flex align-items-center justify-content-center border" style="font-size: 0.8rem; color: #4B5563;" onclick="showToast('Tersimpan di daftar favorit!')"><i class="far fa-heart me-2 fs-6"></i> Simpan</button>
+                <button type="button" class="btn btn-outline-secondary rounded-pill btn-sm flex-fill fw-bold d-flex align-items-center justify-content-center border" style="font-size: 0.8rem; color: #4B5563;" onclick="showToast('Laporan sedang ditinjau.')"><i class="fas fa-exclamation-circle me-2 fs-6"></i> Lapor</button>
+                <button type="button" class="btn btn-outline-secondary rounded-pill btn-sm flex-fill fw-bold d-flex align-items-center justify-content-center border" style="font-size: 0.8rem; color: #4B5563;" onclick="showToast('Tautan berhasil disalin!')"><i class="fas fa-share-alt me-2 fs-6"></i> Bagikan</button>
             </div>
         </div>
     </div>
     
     <!-- Footer Fixed Add Button -->
     <div class="p-3 border-top bg-white">
-        <form action="{{ route('pelanggan.cart.add') }}" method="POST" id="detail-form" class="m-0">
-            @csrf
-            <input type="hidden" name="product_id" id="detail-id" value="">
-            <input type="hidden" name="quantity" value="1">
-            <button type="submit" class="btn btn-success w-100 rounded-pill fw-bold py-2" style="background-color: #00880F; border-color: #00880F; font-size: 1.05rem;">
-                Tambah pembelian
-            </button>
-        </form>
+        <input type="hidden" id="detail-id" value="">
+        <button type="button" onclick="addDetailToCart(this)" class="btn btn-success w-100 rounded-pill fw-bold py-2" style="background-color: #00880F; border-color: #00880F; font-size: 1.05rem;">
+            Tambah pembelian
+        </button>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 1060; margin-bottom: 70px;">
+    <div id="featureToast" class="toast align-items-center text-white bg-dark border-0 rounded-pill" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+        <div class="d-flex">
+            <div class="toast-body fw-bold mx-auto" id="toast-message" style="font-size: 0.9rem;">
+                <!-- Message -->
+            </div>
+        </div>
     </div>
 </div>
 
@@ -542,5 +549,53 @@ document.querySelectorAll('.grab-toggle-btn').forEach(btn => {
         this.classList.add('active');
     });
 });
+
+function showToast(message) {
+    document.getElementById('toast-message').innerText = message;
+    var toast = new bootstrap.Toast(document.getElementById('featureToast'));
+    toast.show();
+}
+
+function addDetailToCart(btn) {
+    const productId = document.getElementById('detail-id').value;
+    const origText = btn.innerText;
+    btn.disabled = true;
+    btn.innerText = 'Menambahkan...';
+    
+    fetch(ADD_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF },
+        body: JSON.stringify({ product_id: productId })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            // Update the main page UI
+            const ctrl = document.getElementById('ctrl-' + productId);
+            if(ctrl) {
+                ctrl.innerHTML = `
+                    <div class="grab-qty-ctrl">
+                        <button class="grab-qty-btn" onclick="updateQty('${productId}', ${data.quantity - 1}, this)">−</button>
+                        <span class="grab-qty-num" id="qty-${productId}">${data.quantity}</span>
+                        <button class="grab-qty-btn" onclick="updateQty('${productId}', ${data.quantity + 1}, this)">+</button>
+                    </div>`;
+            }
+            updateCartBar(data.cartCount, data.cartTotal);
+            
+            // Close modal & show toast
+            var modal = bootstrap.Offcanvas.getInstance(document.getElementById('productDetailModal'));
+            modal.hide();
+            
+            showToast('Item ditambahkan ke keranjang!');
+            
+            // reset button
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerText = origText;
+            }, 500);
+        }
+    })
+    .catch(() => { btn.disabled = false; btn.innerText = origText; });
+}
 </script>
 @endsection
