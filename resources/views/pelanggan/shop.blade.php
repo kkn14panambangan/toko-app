@@ -266,6 +266,31 @@
     .floating-menu-btn:active {
         transform: translateX(-50%) scale(0.95);
     }
+
+    /* Floating WhatsApp Button */
+    .floating-wa-btn {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        background-color: #25D366;
+        color: white;
+        border-radius: 50%;
+        width: 55px;
+        height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+        z-index: 1050;
+        text-decoration: none;
+        transition: transform 0.2s;
+    }
+
+    .floating-wa-btn:hover {
+        transform: scale(1.1);
+        color: white;
+    }
 </style>
 
 <!-- Top Header Cover -->
@@ -286,13 +311,23 @@
         <span style="display: block; margin-left: 20px;">Dusun 2 blok cantilan balong RT 02 RW 04 Desa panambangan kec. sedong kab. cirebon Jawa barat, indonesia</span>
     </div>
 
-<!-- Action Buttons -->
-    <div class="grab-action-buttons mt-3">
-        <a href="https://wa.me/6282213066810" target="_blank" class="grab-action-btn text-decoration-none">
-            <i class="fab fa-whatsapp text-success fs-5"></i> Chat WhatsApp
+<!-- Social Media Info -->
+    <div class="d-flex flex-wrap gap-2 mt-3 mb-2" style="font-size: 0.85rem;">
+        <a href="https://www.instagram.com/kknpanambangan14_umc" target="_blank" class="text-decoration-none text-dark d-flex align-items-center bg-light px-2 py-1 rounded-pill border">
+            <i class="fab fa-instagram text-danger me-1"></i> @kknpanambangan14_umc
         </a>
-        <a href="{{ Storage::url('qr-menu.png') }}" target="_blank" class="grab-action-btn text-decoration-none">
-            <i class="fas fa-qrcode text-muted"></i> QR Menu
+        <a href="https://www.tiktok.com/@kkn.panambangan_umc" target="_blank" class="text-decoration-none text-dark d-flex align-items-center bg-light px-2 py-1 rounded-pill border">
+            <i class="fab fa-tiktok me-1"></i> kkn.panambangan_umc
+        </a>
+        <a href="https://www.youtube.com/@KKNPANAMBANGAN14UMC" target="_blank" class="text-decoration-none text-dark d-flex align-items-center bg-light px-2 py-1 rounded-pill border">
+            <i class="fab fa-youtube text-danger me-1"></i> KKNPANAMBANGAN14UMC
+        </a>
+    </div>
+
+<!-- Action Buttons -->
+    <div class="grab-action-buttons mt-2">
+        <a href="{{ Storage::url('qr-menu.png') }}" target="_blank" class="grab-action-btn text-decoration-none w-100 justify-content-center">
+            <i class="fas fa-qrcode text-muted"></i> Lihat QR Menu
         </a>
     </div>
 </div>
@@ -427,15 +462,21 @@
     </div>
 </div>
 
-<!-- Toast Container -->
-<div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 1060; margin-bottom: 70px;">
-    <div id="featureToast" class="toast align-items-center text-white bg-dark border-0 rounded-pill" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
-        <div class="d-flex">
-            <div class="toast-body fw-bold mx-auto" id="toast-message" style="font-size: 0.9rem;">
-                <!-- Message -->
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 1060; margin-bottom: 70px;">
+        <div id="featureToast" class="toast align-items-center text-white bg-dark border-0 rounded-pill" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+            <div class="d-flex">
+                <div class="toast-body fw-bold mx-auto" id="toast-message" style="font-size: 0.9rem;">
+                    <!-- Message -->
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/6282213066810" target="_blank" class="floating-wa-btn">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 </div>
 
 
