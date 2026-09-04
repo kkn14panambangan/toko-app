@@ -1,106 +1,142 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Google Fonts: Poppins -->
 <style>
-    /* Cafe Menu Styles */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
     body {
-        background-color: #FAE3C6; /* Soft Peach */
-        padding-bottom: 80px; /* Space for bottom nav */
+        font-family: 'Poppins', sans-serif;
+        background-color: #FAFAFA; /* Off-white / Clean background */
+        padding-bottom: 90px;
     }
-    
-    .resto-header {
+
+    /* Clean Header */
+    .clean-header {
+        height: 140px;
+        background: linear-gradient(135deg, #FAE3C6 0%, #F5C695 100%);
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
         position: relative;
-        height: 220px;
-        background: url('{{ Storage::url('logo.jpg') }}') center/cover no-repeat;
-        border-bottom-left-radius: 25px;
-        border-bottom-right-radius: 25px;
+    }
+
+    /* Profile Avatar & Info */
+    .profile-container {
+        margin-top: -60px; /* Overlap the header */
+        text-align: center;
+        padding: 0 20px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid #FFFFFF;
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        overflow: hidden;
-    }
-    
-    .resto-header::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(to top, rgba(198, 42, 41, 0.85) 0%, rgba(74, 138, 52, 0.4) 100%);
+        object-fit: cover;
+        background: #fff;
     }
 
-    .resto-info {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        padding: 20px;
-        color: white;
-        z-index: 1;
+    .profile-title {
+        font-weight: 800;
+        color: #2D3748;
+        margin-top: 15px;
+        margin-bottom: 2px;
+        font-size: 1.5rem;
+        letter-spacing: -0.5px;
     }
 
-    .info-badge {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(5px);
-        border-radius: 20px;
-        padding: 5px 12px;
+    .profile-subtitle {
+        color: #C62A29; /* Red accent */
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    .profile-address {
+        color: #718096;
         font-size: 0.8rem;
-        display: inline-block;
-        margin-right: 5px;
-        border: 1px solid rgba(255,255,255,0.3);
+        line-height: 1.4;
+        max-width: 400px;
+        margin: 0 auto 15px auto;
     }
 
-    /* Sticky Categories */
+    .info-badges {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .badge-clean {
+        background: #FFFFFF;
+        color: #4A5568;
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        border: 1px solid #EDF2F7;
+    }
+
+    .badge-clean i {
+        color: #F6AD55; /* Orange star */
+    }
+
+    /* Modern Sticky Categories */
     .sticky-categories {
         position: sticky;
         top: 0;
         z-index: 1020;
-        background: rgba(250, 227, 198, 0.95); /* Match peach body */
-        backdrop-filter: blur(10px);
-        padding: 12px 0;
-        box-shadow: 0 4px 10px rgba(198, 42, 41, 0.08);
+        background: rgba(250, 250, 250, 0.95);
+        backdrop-filter: blur(8px);
+        padding: 15px 0;
+        border-bottom: 1px solid #EDF2F7;
     }
 
     .category-scroll {
         display: flex;
         overflow-x: auto;
-        gap: 10px;
-        padding: 0 15px;
+        gap: 12px;
+        padding: 0 20px;
         scrollbar-width: none;
-        -ms-overflow-style: none;
     }
     
-    .category-scroll::-webkit-scrollbar {
-        display: none;
-    }
+    .category-scroll::-webkit-scrollbar { display: none; }
 
     .btn-category {
         white-space: nowrap;
-        padding: 8px 20px;
-        border-radius: 25px;
-        border: 2px solid transparent;
-        background: white;
-        color: #C62A29; /* Red text */
-        font-weight: 700;
+        padding: 8px 24px;
+        border-radius: 30px;
+        border: 1px solid #E2E8F0;
+        background: #FFFFFF;
+        color: #4A5568;
+        font-weight: 500;
         font-size: 0.9rem;
-        box-shadow: 0 2px 8px rgba(198, 42, 41, 0.1);
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
     }
 
     .btn-category.active {
-        background: #4A8A34; /* Green */
-        color: white;
-        border-color: #4A8A34;
-        box-shadow: 0 4px 12px rgba(74, 138, 52, 0.3);
+        background: #C62A29; /* Red theme active */
+        color: #FFFFFF;
+        border-color: #C62A29;
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(198, 42, 41, 0.2);
     }
 
-    /* Product List View */
+    /* Clean Product Cards */
     .menu-item {
-        background: white;
-        border-radius: 20px;
-        padding: 12px;
-        margin-bottom: 12px;
+        background: #FFFFFF;
+        border-radius: 16px;
+        padding: 15px;
+        margin-bottom: 15px;
         display: flex;
         gap: 15px;
-        box-shadow: 0 4px 12px rgba(198, 42, 41, 0.08);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03); /* Super soft shadow */
+        border: 1px solid #F7FAFC;
         transition: transform 0.2s;
-        border: 2px solid transparent;
     }
     
     .menu-item:active {
@@ -113,8 +149,7 @@
         flex-shrink: 0;
         border-radius: 12px;
         overflow: hidden;
-        position: relative;
-        background: #eee;
+        background: #F7FAFC;
     }
 
     .menu-img {
@@ -132,15 +167,15 @@
 
     .menu-title {
         font-weight: 700;
-        font-size: 1.05rem;
+        font-size: 1rem;
+        color: #2D3748;
         margin-bottom: 4px;
-        color: #2c3e50;
-        line-height: 1.2;
+        line-height: 1.3;
     }
 
     .menu-desc {
         font-size: 0.8rem;
-        color: #7f8c8d;
+        color: #A0AEC0;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
@@ -149,46 +184,51 @@
     }
 
     .menu-price {
-        font-weight: 800;
-        color: #C62A29; /* Red Price */
+        font-weight: 700;
+        color: #2D3748;
         font-size: 1.1rem;
     }
 
     .btn-add {
-        background: #4A8A34; /* Green button */
-        color: white;
-        border: none;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.1rem;
-        box-shadow: 0 4px 10px rgba(74, 138, 52, 0.4);
+        background: #FFFFFF;
+        color: #4A8A34; /* Green Add button */
+        border: 1.5px solid #4A8A34;
+        padding: 4px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
         transition: all 0.2s;
     }
     
     .btn-add:active {
-        background: #386e26;
-        transform: scale(0.9);
+        background: #4A8A34;
+        color: #FFFFFF;
     }
 
     .btn-add:disabled {
-        background: #ccc;
-        box-shadow: none;
+        border-color: #CBD5E0;
+        color: #CBD5E0;
     }
 </style>
 
-<!-- Hero Banner (Resto Style) -->
-<div class="resto-header">
-    <div class="resto-info">
-        <h1 class="fw-bold mb-0 h3 text-white" style="text-shadow: 1px 1px 4px rgba(0,0,0,0.5);">{{ 'Kembang Tahu Pak Ujang' }}</h1>
-        <h2 class="h6 mb-2 fw-bold fst-italic" style="color: #FAE3C6; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Khas Panambangan</h2>
-        <p class="mb-2 text-white" style="font-size: 0.75rem; line-height: 1.4; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);"><i class="fas fa-map-marker-alt me-1 text-warning"></i>Dusun 2 blok.cantilan balong RT 02 RW 04 Desa panambangan kec.sedong kab.cirebon Jawa barat, indonesia</p>
-        <div>
-            <span class="info-badge"><i class="fas fa-star text-warning me-1"></i>4.9</span>
-            <span class="info-badge"><i class="far fa-clock me-1"></i>{{ $setting->jam_buka ?? '08:00' }} - {{ $setting->jam_tutup ?? '17:00' }}</span>
+<!-- Clean Header Background -->
+<div class="clean-header"></div>
+
+<!-- Profile Section -->
+<div class="profile-container">
+    <img src="{{ Storage::url('logo.jpg') }}" alt="Logo Toko" class="profile-avatar">
+    <h1 class="profile-title">Kembang Tahu Pak Ujang</h1>
+    <div class="profile-subtitle">Khas Panambangan</div>
+    <p class="profile-address">
+        <i class="fas fa-map-marker-alt me-1 text-danger"></i> Dusun 2 blok.cantilan balong RT 02 RW 04 Desa panambangan kec.sedong kab.cirebon Jawa barat, indonesia
+    </p>
+    
+    <div class="info-badges">
+        <div class="badge-clean">
+            <i class="fas fa-star"></i> 4.9
+        </div>
+        <div class="badge-clean">
+            <i class="far fa-clock me-1 text-muted"></i> {{ $setting->jam_buka ?? '08:00' }} - {{ $setting->jam_tutup ?? '17:00' }}
         </div>
     </div>
 </div>
@@ -196,7 +236,7 @@
 <!-- Sticky Categories -->
 <div class="sticky-categories">
     <div class="category-scroll">
-        <button class="btn-category active" data-category="all" onclick="filterCategory('all')">Menu Kami</button>
+        <button class="btn-category active" data-category="all" onclick="filterCategory('all')">Paling Laris</button>
         <button class="btn-category" data-category="segar" onclick="filterCategory('segar')">Kembang Tahu Segar</button>
         <button class="btn-category" data-category="kering" onclick="filterCategory('kering')">Kembang Tahu Kering</button>
         <button class="btn-category" data-category="olahan" onclick="filterCategory('olahan')">Olahan</button>
@@ -205,7 +245,7 @@
 </div>
 
 <!-- Product List -->
-<div class="container mt-3 px-3">
+<div class="container mt-4 px-3">
     <div class="row" id="productsContainer">
         @forelse($products as $product)
         <div class="col-12 col-md-6 col-lg-4 product-item" data-category="{{ $product->kategori }}">
@@ -223,7 +263,7 @@
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <input type="hidden" name="quantity" value="1">
                             <button type="submit" class="btn-add" {{ $product->stok <= 0 ? 'disabled' : '' }}>
-                                <i class="fas fa-plus"></i>
+                                {{ $product->stok <= 0 ? 'Habis' : 'Tambah' }}
                             </button>
                         </form>
                     </div>
@@ -232,12 +272,12 @@
                     @if($product->gambar)
                         <img src="{{ Storage::url($product->gambar) }}" class="menu-img" alt="{{ $product->nama_produk }}">
                     @else
-                        <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light text-muted">
+                        <div class="w-100 h-100 d-flex align-items-center justify-content-center text-muted" style="background:#EDF2F7;">
                             <i class="fas fa-image fa-2x"></i>
                         </div>
                     @endif
                     @if($product->stok <= 0)
-                        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center" style="border-radius:12px;">
                             <span class="badge bg-danger small">Habis</span>
                         </div>
                     @endif
@@ -246,24 +286,29 @@
         </div>
         @empty
         <div class="col-12 text-center py-5">
-            <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
-            <p class="text-muted">Menu belum tersedia</p>
+            <i class="fas fa-box-open fa-3x text-muted mb-3 opacity-50"></i>
+            <p class="text-muted font-monospace">Menu belum tersedia</p>
         </div>
         @endforelse
     </div>
 </div>
 
-<!-- E-Catalog Info Section -->
+<!-- Modern Contact Section -->
 <div class="container py-4 mt-2 mb-4">
-    <div class="bg-white rounded-4 p-4 shadow text-center border-0" style="border-top: 5px solid #4A8A34 !important;">
-        <h5 class="fw-bold mb-2" style="color: #C62A29;"><i class="fas fa-info-circle me-2"></i>Hubungi Kami</h5>
-        <p class="text-muted small mb-3">Pesan sekarang atau tanyakan menu melalui WhatsApp Bapak Ujang.</p>
-        <a href="https://wa.me/6282213066810" target="_blank" class="btn btn-success btn-sm rounded-pill px-4 mb-3 fw-bold" style="background-color: #25D366; border: none;">
-            <i class="fab fa-whatsapp me-2 fs-5 align-middle"></i> 082213066810
+    <div class="bg-white rounded-4 p-4 shadow-sm text-center border-0">
+        <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded-circle mb-3" style="width: 50px; height: 50px;">
+            <i class="fab fa-whatsapp fs-3"></i>
+        </div>
+        <h5 class="fw-bold mb-2 text-dark">Hubungi Kami</h5>
+        <p class="text-muted small mb-4">Pesan sekarang atau tanyakan ketersediaan menu langsung melalui WhatsApp Bapak Ujang.</p>
+        <a href="https://wa.me/6282213066810" target="_blank" class="btn btn-success rounded-pill px-4 py-2 fw-bold w-100" style="background-color: #25D366; border: none; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);">
+            Chat 082213066810
         </a>
-        <hr class="my-3 text-muted opacity-25">
-        <a href="{{ Storage::url('qr-menu.png') }}" download target="_blank" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
-            <i class="fas fa-qrcode me-1"></i> Simpan QR Menu
+        
+        <hr class="my-4 text-muted opacity-10">
+        
+        <a href="{{ Storage::url('qr-menu.png') }}" download target="_blank" class="btn btn-light btn-sm rounded-pill px-4 text-muted border">
+            <i class="fas fa-qrcode me-2"></i> Simpan QR Menu
         </a>
     </div>
 </div>
