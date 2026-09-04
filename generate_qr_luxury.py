@@ -24,20 +24,20 @@ font_bold_path = "arialbd.ttf"
 
 # Load Fonts
 try:
-    font_title = ImageFont.truetype(font_title_path, 300)
+    font_title = ImageFont.truetype(font_title_path, 240)
 except:
     font_title = ImageFont.load_default()
 
 try:
-    font_subtitle = ImageFont.truetype(font_body_path, 34)
-    font_social = ImageFont.truetype(font_body_path, 30)
-    font_social_bold = ImageFont.truetype(font_bold_path, 30)
+    font_subtitle = ImageFont.truetype(font_body_path, 32)
+    font_social = ImageFont.truetype(font_body_path, 26)
+    font_social_bold = ImageFont.truetype(font_bold_path, 26)
 except:
     font_subtitle = font_social = font_social_bold = ImageFont.load_default()
 
 # 2. Base Image setup (1200x1800 - Poster 2:3 ratio)
 WIDTH, HEIGHT = 1200, 1800
-bg_color = (26, 22, 20, 255) # Deep warm brown/black
+bg_color = (70, 44, 29, 255) # Warm brown matching logo
 gold_color = (212, 175, 55, 255)
 white_color = (255, 255, 255, 255)
 
@@ -64,7 +64,7 @@ title_text = "Menu"
 bbox_title = draw.textbbox((0, 0), title_text, font=font_title)
 title_w = bbox_title[2] - bbox_title[0]
 title_h = bbox_title[3] - bbox_title[1]
-title_y = 250
+title_y = 180
 draw.text(((WIDTH - title_w) / 2, title_y), title_text, font=font_title, fill=gold_color)
 
 # Draw Subtitle
@@ -76,7 +76,7 @@ draw.text(((WIDTH - sub_w) / 2, sub_y), subtitle_text, font=font_subtitle, fill=
 
 # 5. Prepare the Logo
 logo_path = r"C:\Users\Adin Nugraha\.gemini\antigravity-ide\brain\9e5c5e75-dc3c-4eae-991b-723707e811bf\.user_uploaded\media_1788557306164.jpg"
-logo_size = 200
+logo_size = 240
 raw_logo = Image.open(logo_path).convert("RGBA")
 # Crop logo to circle
 raw_logo = raw_logo.resize((logo_size, logo_size), Image.Resampling.LANCZOS)
@@ -97,7 +97,7 @@ logo_with_border.paste(logo_circle, (8, 8), logo_circle)
 qr = qrcode.QRCode(
     version=6, 
     error_correction=qrcode.constants.ERROR_CORRECT_H, 
-    box_size=18,
+    box_size=15,
     border=2,
 )
 qr.add_data('https://toko-app-nine.vercel.app/')
@@ -122,12 +122,12 @@ draw_qb.rectangle([0, 0, qr_box_size-1, qr_box_size-1], outline=gold_color, widt
 qr_box.paste(qr_img, (box_padding, box_padding))
 
 # Paste QR box onto main image
-qr_y = sub_y + 120
+qr_y = sub_y + 100
 qr_x = (WIDTH - qr_box_size) // 2
 img.paste(qr_box, (qr_x, qr_y))
 
 # 7. Add Social Media Info
-info_y = qr_y + qr_box_size + 140
+info_y = qr_y + qr_box_size + 110
 
 socials = [
     ("WhatsApp", "0822 1306 6810"),
@@ -141,7 +141,7 @@ divider_w = 400
 divider_x = (WIDTH - divider_w) // 2
 draw.line((divider_x, info_y, divider_x + divider_w, info_y), fill=gold_color, width=2)
 
-info_y += 60
+info_y += 50
 
 for platform, handle in socials:
     # Measure platform
@@ -158,10 +158,10 @@ for platform, handle in socials:
     draw.text((start_x, info_y), platform.upper() + ": ", font=font_social_bold, fill=gold_color)
     draw.text((start_x + pw, info_y), handle, font=font_social, fill=white_color)
     
-    info_y += 50
+    info_y += 45
 
 # Draw bottom divider
-info_y += 20
+info_y += 15
 draw.line((divider_x, info_y, divider_x + divider_w, info_y), fill=gold_color, width=2)
 
 
