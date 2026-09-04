@@ -183,7 +183,7 @@
     <div class="resto-info">
         <h1 class="fw-bold mb-0 h3">{{ 'Kembang Tahu Pak Ujang' }}</h1>
         <h2 class="h6 mb-2 text-warning fw-semibold fst-italic">Khas Panambangan</h2>
-        <p class="mb-2 text-white-50 small"><i class="fas fa-map-marker-alt me-1"></i>{{ $setting->alamat ?? 'Cirebon, Jawa Barat' }}</p>
+        <p class="mb-2 text-white-50" style="font-size: 0.75rem; line-height: 1.4;"><i class="fas fa-map-marker-alt me-1"></i>Dusun 2 blok.cantilan balong RT 02 RW 04 Desa panambangan kec.sedong kab.cirebon Jawa barat, indonesia</p>
         <div>
             <span class="info-badge"><i class="fas fa-star text-warning me-1"></i>4.9</span>
             <span class="info-badge"><i class="far fa-clock me-1"></i>{{ $setting->jam_buka ?? '08:00' }} - {{ $setting->jam_tutup ?? '17:00' }}</span>
@@ -254,8 +254,11 @@
 <!-- E-Catalog Info Section -->
 <div class="container py-4 mt-2 mb-4">
     <div class="bg-white rounded-4 p-4 shadow-sm text-center border">
-        <h5 class="fw-bold mb-2" style="color: #8b5a2b;"><i class="fas fa-info-circle me-2"></i>Tentang Kami</h5>
-        <p class="text-muted small mb-0">{{ $setting->deskripsi ?? 'Nikmati kembang tahu segar dan berkualitas dari Kembang Tahu Pak Ujang.' }}</p>
+        <h5 class="fw-bold mb-2" style="color: #8b5a2b;"><i class="fas fa-info-circle me-2"></i>Hubungi Kami</h5>
+        <p class="text-muted small mb-3">Pesan sekarang atau tanyakan menu melalui WhatsApp Bapak Ujang.</p>
+        <a href="https://wa.me/6282213066810" target="_blank" class="btn btn-success btn-sm rounded-pill px-4 mb-3 fw-bold" style="background-color: #25D366; border: none;">
+            <i class="fab fa-whatsapp me-2 fs-5 align-middle"></i> 082213066810
+        </a>
         <hr class="my-3 text-muted opacity-25">
         <a href="{{ Storage::url('qr-menu.png') }}" download target="_blank" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
             <i class="fas fa-qrcode me-1"></i> Simpan QR Menu
