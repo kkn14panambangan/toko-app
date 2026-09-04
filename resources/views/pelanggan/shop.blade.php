@@ -350,8 +350,8 @@
     </div>
     
     <div class="offcanvas-body p-0 flex-grow-1" style="overflow-y: auto;">
-        <img id="detail-img" src="" class="w-100" style="height: 300px; object-fit: contain; background: #FFFFFF; display: none;">
-        <div id="detail-img-placeholder" class="w-100 d-flex align-items-center justify-content-center text-muted" style="height: 300px; background: #F3F4F6;">
+        <img id="detail-img" src="" class="w-100 d-none" style="height: 300px; object-fit: cover; background: #FFFFFF;">
+        <div id="detail-img-placeholder" class="w-100 align-items-center justify-content-center text-muted d-none" style="height: 300px; background: #F3F4F6;">
             <i class="fas fa-image fa-4x opacity-25"></i>
         </div>
         
@@ -391,11 +391,13 @@ function openProductDetail(id, title, desc, price, img) {
     
     if (img) {
         document.getElementById('detail-img').src = img;
-        document.getElementById('detail-img').style.display = 'block';
-        document.getElementById('detail-img-placeholder').style.display = 'none';
+        document.getElementById('detail-img').classList.remove('d-none');
+        document.getElementById('detail-img-placeholder').classList.add('d-none');
+        document.getElementById('detail-img-placeholder').classList.remove('d-flex');
     } else {
-        document.getElementById('detail-img').style.display = 'none';
-        document.getElementById('detail-img-placeholder').style.display = 'flex';
+        document.getElementById('detail-img').classList.add('d-none');
+        document.getElementById('detail-img-placeholder').classList.remove('d-none');
+        document.getElementById('detail-img-placeholder').classList.add('d-flex');
     }
     
     var modal = new bootstrap.Offcanvas(document.getElementById('productDetailModal'));
