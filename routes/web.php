@@ -79,3 +79,8 @@ Route::get('/setup-db-2026', function() {
     \Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
     return "Database has been refreshed and seeded successfully.";
 });
+
+Route::get('/update-price', function() {
+    \App\Models\Produk::where('harga', 5000)->update(['harga' => 7000]);
+    return "Updated";
+});
