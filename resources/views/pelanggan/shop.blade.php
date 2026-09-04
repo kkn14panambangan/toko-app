@@ -228,23 +228,6 @@
 
 <!-- Top Header Cover -->
 <div class="grab-header">
-    <!-- Back button & Icons like in Grab -->
-    <div class="d-flex justify-content-between p-3 position-relative z-3">
-        <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 36px; height: 36px;">
-            <i class="fas fa-arrow-left text-dark"></i>
-        </div>
-        <div class="d-flex gap-2">
-            <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 36px; height: 36px;">
-                <i class="fas fa-search text-dark"></i>
-            </div>
-            <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 36px; height: 36px;">
-                <i class="far fa-heart text-dark"></i>
-            </div>
-            <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 36px; height: 36px;">
-                <i class="fas fa-share-alt text-dark"></i>
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- Floating Store Card -->
