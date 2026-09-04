@@ -252,7 +252,7 @@
     <h1 class="store-title">Kembang Tahu Pak Ujang</h1>
     <h2 class="text-muted mb-2" style="font-size: 1rem; font-weight: 500;">Khas Panambangan</h2>
     <div class="store-meta">
-        <a href="https://maps.google.com/?q=Kembang+Tahu+Pak+Ujang+Panambangan" target="_blank" class="text-decoration-none d-flex align-items-center">
+        <a href="https://www.google.com/maps/search/?api=1&query=Kembang+Tahu+Pak+Ujang,+Desa+Panambangan,+Sedong,+Cirebon" target="_blank" class="text-decoration-none d-flex align-items-center">
             <i class="fas fa-star text-warning me-1"></i> <span class="fw-bold me-1 text-dark">5.0</span> <span class="text-muted">(0 ulasan)</span> <i class="fas fa-chevron-right ms-2 text-muted" style="font-size: 0.7rem;"></i>
         </a>
     </div>
