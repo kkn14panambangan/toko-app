@@ -271,7 +271,7 @@
             @foreach($items as $product)
             <div class="grab-item">
                 <!-- Left: Text -->
-                <div class="grab-item-content">
+                <div class="grab-item-content" onclick="openProductDetail('{{ $product->id }}', '{{ htmlspecialchars($product->nama_produk, ENT_QUOTES) }}', '{{ htmlspecialchars($product->deskripsi, ENT_QUOTES) }}', '{{ number_format($product->harga, 0, ',', '.') }}', '{{ $product->gambar ? Storage::url($product->gambar) : '' }}')" style="cursor: pointer;">
                     @if($product->kategori == 'segar')
                         <div class="text-danger mb-1" style="font-size: 0.7rem; font-weight: 700;">
                             <i class="fas fa-shopping-bag me-1"></i> Sering dibeli lagi
@@ -285,9 +285,9 @@
                 <!-- Right: Image & Button -->
                 <div class="grab-img-wrapper">
                     @if($product->gambar)
-                        <img src="{{ Storage::url($product->gambar) }}" class="grab-item-img" alt="{{ $product->nama_produk }}">
+                        <img src="{{ Storage::url($product->gambar) }}" class="grab-item-img" alt="{{ $product->nama_produk }}" onclick="openProductDetail('{{ $product->id }}', '{{ htmlspecialchars($product->nama_produk, ENT_QUOTES) }}', '{{ htmlspecialchars($product->deskripsi, ENT_QUOTES) }}', '{{ number_format($product->harga, 0, ',', '.') }}', '{{ Storage::url($product->gambar) }}')" style="cursor: pointer;">
                     @else
-                        <div class="grab-item-img d-flex align-items-center justify-content-center text-muted border">
+                        <div class="grab-item-img d-flex align-items-center justify-content-center text-muted border" onclick="openProductDetail('{{ $product->id }}', '{{ htmlspecialchars($product->nama_produk, ENT_QUOTES) }}', '{{ htmlspecialchars($product->deskripsi, ENT_QUOTES) }}', '{{ number_format($product->harga, 0, ',', '.') }}', '')" style="cursor: pointer;">
                             <i class="fas fa-image fa-2x"></i>
                         </div>
                     @endif
@@ -342,7 +342,66 @@
     </div>
 </div>
 
+<!-- Product Detail Offcanvas -->
+<div class="offcanvas offcanvas-bottom d-flex flex-column" tabindex="-1" id="productDetailModal" style="height: 90vh; border-top-left-radius: 20px; border-top-right-radius: 20px;">
+    <!-- Pull Indicator & Close -->
+    <div class="text-center pt-2 pb-1 position-relative bg-white" style="border-top-left-radius: 20px; border-top-right-radius: 20px;">
+        <div style="width: 40px; height: 4px; background: #E5E7EB; border-radius: 2px; margin: 0 auto;"></div>
+    </div>
+    
+    <div class="offcanvas-body p-0 flex-grow-1" style="overflow-y: auto;">
+        <img id="detail-img" src="" class="w-100" style="height: 300px; object-fit: contain; background: #FFFFFF; display: none;">
+        <div id="detail-img-placeholder" class="w-100 d-flex align-items-center justify-content-center text-muted" style="height: 300px; background: #F3F4F6;">
+            <i class="fas fa-image fa-4x opacity-25"></i>
+        </div>
+        
+        <div class="p-4 bg-white">
+            <h2 id="detail-title" class="fw-bold mb-1" style="font-size: 1.4rem;"></h2>
+            <p id="detail-desc" class="text-muted mb-3" style="font-size: 0.9rem; line-height: 1.4;"></p>
+            <h4 id="detail-price" class="fw-bold mb-4" style="font-size: 1.1rem;"></h4>
+            
+            <div class="d-flex justify-content-between gap-2 mb-2">
+                <button class="btn btn-outline-secondary rounded-pill btn-sm flex-fill fw-bold d-flex align-items-center justify-content-center border" style="font-size: 0.8rem; color: #4B5563;"><i class="far fa-heart me-2 fs-6"></i> Simpan</button>
+                <button class="btn btn-outline-secondary rounded-pill btn-sm flex-fill fw-bold d-flex align-items-center justify-content-center border" style="font-size: 0.8rem; color: #4B5563;"><i class="fas fa-exclamation-circle me-2 fs-6"></i> Lapor</button>
+                <button class="btn btn-outline-secondary rounded-pill btn-sm flex-fill fw-bold d-flex align-items-center justify-content-center border" style="font-size: 0.8rem; color: #4B5563;"><i class="fas fa-share-alt me-2 fs-6"></i> Bagikan</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Fixed Add Button -->
+    <div class="p-3 border-top bg-white">
+        <form action="{{ route('pelanggan.cart.add') }}" method="POST" id="detail-form" class="m-0">
+            @csrf
+            <input type="hidden" name="product_id" id="detail-id" value="">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="btn btn-success w-100 rounded-pill fw-bold py-2" style="background-color: #00880F; border-color: #00880F; font-size: 1.05rem;">
+                Tambah pembelian
+            </button>
+        </form>
+    </div>
+</div>
+
 <script>
+// Open Product Detail Modal
+function openProductDetail(id, title, desc, price, img) {
+    document.getElementById('detail-id').value = id;
+    document.getElementById('detail-title').innerText = title;
+    document.getElementById('detail-desc').innerText = desc;
+    document.getElementById('detail-price').innerText = price;
+    
+    if (img) {
+        document.getElementById('detail-img').src = img;
+        document.getElementById('detail-img').style.display = 'block';
+        document.getElementById('detail-img-placeholder').style.display = 'none';
+    } else {
+        document.getElementById('detail-img').style.display = 'none';
+        document.getElementById('detail-img-placeholder').style.display = 'flex';
+    }
+    
+    var modal = new bootstrap.Offcanvas(document.getElementById('productDetailModal'));
+    modal.show();
+}
+
 // Mock interaction for Delivery/Pickup toggle
 document.querySelectorAll('.grab-toggle-btn').forEach(btn => {
     btn.addEventListener('click', function() {
