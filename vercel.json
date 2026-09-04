@@ -16,6 +16,10 @@
             "dest": "/public/qris-payment.jpg"
         },
         {
+            "src": "/qr-menu.png",
+            "dest": "/public/qr-menu.png"
+        },
+        {
             "src": "/build/(.*)",
             "dest": "/public/build/$1"
         },
