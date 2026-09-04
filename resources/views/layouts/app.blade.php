@@ -11,52 +11,10 @@
     </style>
 </head>
 <body>
-    <!-- Navbar (Hide on Shop Page for GrabFood full-screen feel) -->
-@if(!request()->routeIs('pelanggan.shop'))
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container">
-        <a class="navbar-brand fw-bold text-dark" href="{{ route('home') }}">
-            <i class="fas fa-store me-2 text-danger"></i>Kembang Tahu Pak Ujang
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('pelanggan.shop') }}">Toko</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('pelanggan.cart') }}">Keranjang</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('pelanggan.history') }}">Riwayat</a>
-                </li>
-                
-                @auth
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin</a>
-                    </li>
-                    <li class="nav-item">
-                        <form action="{{ route('admin.logout') }}" method="POST" class="d-inline">
-                            @csrf
-                            <button type="submit" class="btn btn-link nav-link text-danger">Logout</button>
-                        </form>
-                    </li>
-                @else
-                    <!-- ✅ UBAH DARI "Login" MENJADI "Admin" -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('admin.login') }}">Admin</a>
-                    </li>
-                @endauth
-            </ul>
-        </div>
-    </div>
-</nav>
-@endif
+
 
     <!-- Content -->
-    <main class="py-4">
+    <main>
         @yield('content')
     </main>
 
