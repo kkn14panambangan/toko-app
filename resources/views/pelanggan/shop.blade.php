@@ -259,56 +259,88 @@
 
 <!-- Menu Section -->
 <div class="grab-menu-section" id="menu-section">
-    <h2 class="menu-section-title">Semua Menu</h2>
-    
-    <div class="grab-list-container pb-5">
-        @forelse($products as $product)
-        <div class="grab-item">
-            <!-- Left: Text -->
-            <div class="grab-item-content">
-                @if($product->kategori == 'segar')
-                    <div class="text-danger mb-1" style="font-size: 0.7rem; font-weight: 700;">
-                        <i class="fas fa-shopping-bag me-1"></i> Sering dibeli lagi
-                    </div>
-                @endif
-                <h3 class="grab-item-title">{{ $product->nama_produk }}</h3>
-                <p class="grab-item-desc">{{ $product->deskripsi }}</p>
-                <div class="grab-item-price">{{ number_format($product->harga, 0, ',', '.') }}</div>
-            </div>
-            
-            <!-- Right: Image & Button -->
-            <div class="grab-img-wrapper">
-                @if($product->gambar)
-                    <img src="{{ Storage::url($product->gambar) }}" class="grab-item-img" alt="{{ $product->nama_produk }}">
-                @else
-                    <div class="grab-item-img d-flex align-items-center justify-content-center text-muted border">
-                        <i class="fas fa-image fa-2x"></i>
-                    </div>
-                @endif
+    @php
+        $groupedProducts = collect($products)->groupBy(function($product) {
+            return $product->kategori ? ucfirst($product->kategori) : 'Kembang Tahu';
+        });
+    @endphp
+
+    @forelse($groupedProducts as $category => $items)
+        <h2 class="menu-section-title" id="cat-{{ Str::slug($category) }}">{{ strtoupper($category) }}</h2>
+        <div class="grab-list-container pb-4">
+            @foreach($items as $product)
+            <div class="grab-item">
+                <!-- Left: Text -->
+                <div class="grab-item-content">
+                    @if($product->kategori == 'segar')
+                        <div class="text-danger mb-1" style="font-size: 0.7rem; font-weight: 700;">
+                            <i class="fas fa-shopping-bag me-1"></i> Sering dibeli lagi
+                        </div>
+                    @endif
+                    <h3 class="grab-item-title">{{ $product->nama_produk }}</h3>
+                    <p class="grab-item-desc">{{ $product->deskripsi }}</p>
+                    <div class="grab-item-price">{{ number_format($product->harga, 0, ',', '.') }}</div>
+                </div>
                 
-                <form action="{{ route('pelanggan.cart.add') }}" method="POST" class="m-0">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <input type="hidden" name="quantity" value="1">
-                    <button type="submit" class="grab-btn-add" {{ $product->stok <= 0 ? 'disabled' : '' }}>
-                        {{ $product->stok <= 0 ? 'Habis' : 'Tambah' }}
-                    </button>
-                </form>
+                <!-- Right: Image & Button -->
+                <div class="grab-img-wrapper">
+                    @if($product->gambar)
+                        <img src="{{ Storage::url($product->gambar) }}" class="grab-item-img" alt="{{ $product->nama_produk }}">
+                    @else
+                        <div class="grab-item-img d-flex align-items-center justify-content-center text-muted border">
+                            <i class="fas fa-image fa-2x"></i>
+                        </div>
+                    @endif
+                    
+                    <form action="{{ route('pelanggan.cart.add') }}" method="POST" class="m-0">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="grab-btn-add" {{ $product->stok <= 0 ? 'disabled' : '' }}>
+                            {{ $product->stok <= 0 ? 'Habis' : 'Tambah' }}
+                        </button>
+                    </form>
+                </div>
             </div>
+            @endforeach
         </div>
-        @empty
+    @empty
         <div class="text-center py-5">
             <i class="fas fa-store-slash fa-3x text-muted mb-3 opacity-50"></i>
             <p class="text-muted fw-bold">Belum ada menu tersedia</p>
         </div>
-        @endforelse
-    </div>
+    @endforelse
 </div>
 
 <!-- Floating Menu Button -->
-<a href="#menu-section" class="floating-menu-btn">
+<button class="floating-menu-btn border-0" data-bs-toggle="modal" data-bs-target="#categoryModal">
     <i class="fas fa-concierge-bell"></i> Menu
-</a>
+</button>
+
+<!-- Category Modal -->
+<div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true" style="z-index: 1050;">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="margin: 20px;">
+        <div class="modal-content border-0" style="background: transparent;">
+            <div class="bg-white" style="border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); overflow: hidden;">
+                <ul class="list-group list-group-flush">
+                    @foreach($groupedProducts as $category => $items)
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3 px-4" style="font-weight: 700; cursor: pointer; color: #111827; border-bottom: 1px solid #F3F4F6;" onclick="document.getElementById('cat-{{ Str::slug($category) }}').scrollIntoView({behavior: 'smooth', block: 'start'}); bootstrap.Modal.getInstance(document.getElementById('categoryModal')).hide();">
+                            {{ strtoupper($category) }}
+                            <span class="text-muted" style="font-size: 0.9rem; font-weight: 400;">{{ count($items) }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+            
+            <!-- Floating Close Button -->
+            <div class="text-center mt-4">
+                <button class="btn btn-danger rounded-pill px-4 fw-bold shadow" data-bs-dismiss="modal" style="background-color: #E02020; border: none; font-size: 0.95rem;">
+                    <i class="fas fa-times me-1"></i> Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 // Mock interaction for Delivery/Pickup toggle
