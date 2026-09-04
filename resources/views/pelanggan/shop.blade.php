@@ -181,7 +181,7 @@
 <!-- Hero Banner (Resto Style) -->
 <div class="resto-header">
     <div class="resto-info">
-        <h1 class="fw-bold mb-1 h3">{{ $setting->nama_toko ?? 'Kembang Tahu 65' }}</h1>
+        <h1 class="fw-bold mb-1 h3">{{ 'Kembang Tahu Pak Ujang' }}</h1>
         <p class="mb-2 text-white-50 small"><i class="fas fa-map-marker-alt me-1"></i>{{ $setting->alamat ?? 'Cirebon, Jawa Barat' }}</p>
         <div>
             <span class="info-badge"><i class="fas fa-star text-warning me-1"></i>4.9</span>
@@ -254,7 +254,7 @@
 <div class="container py-4 mt-2 mb-4">
     <div class="bg-white rounded-4 p-4 shadow-sm text-center border">
         <h5 class="fw-bold mb-2" style="color: #8b5a2b;"><i class="fas fa-info-circle me-2"></i>Tentang Kami</h5>
-        <p class="text-muted small mb-0">{{ $setting->deskripsi ?? 'Nikmati kembang tahu segar dan berkualitas dari Kembang Tahu 65.' }}</p>
+        <p class="text-muted small mb-0">{{ $setting->deskripsi ?? 'Nikmati kembang tahu segar dan berkualitas dari Kembang Tahu Pak Ujang.' }}</p>
         <hr class="my-3 text-muted opacity-25">
         <a href="{{ Storage::url('qr-menu.png') }}" download target="_blank" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
             <i class="fas fa-qrcode me-1"></i> Simpan QR Menu
