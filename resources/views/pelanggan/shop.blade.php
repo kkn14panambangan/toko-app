@@ -514,7 +514,7 @@
     </div>
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/6282213066810" target="_blank" class="floating-wa-btn">
+    <a href="https://wa.me/6282213066810" target="_blank" class="floating-wa-btn" id="floatingWaBtn">
         <i class="fab fa-whatsapp"></i>
     </a>
 </div>
@@ -678,5 +678,67 @@ function addDetailToCart(btn) {
     })
     .catch(() => { btn.disabled = false; btn.innerText = origText; });
 }
+
+// Make WA Button Draggable
+document.addEventListener('DOMContentLoaded', function() {
+    const waBtn = document.getElementById('floatingWaBtn');
+    let isDragging = false;
+    let currentX = 0, currentY = 0, initialX, initialY;
+    let xOffset = 0, yOffset = 0;
+
+    function dragStart(e) {
+        if (e.type === 'touchstart') {
+            initialX = e.touches[0].clientX - xOffset;
+            initialY = e.touches[0].clientY - yOffset;
+        } else {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+        }
+        if (e.target === waBtn || waBtn.contains(e.target)) {
+            isDragging = true;
+        }
+    }
+
+    function dragEnd(e) {
+        if (!isDragging) return;
+        initialX = currentX;
+        initialY = currentY;
+        isDragging = false;
+    }
+
+    function drag(e) {
+        if (isDragging) {
+            e.preventDefault();
+            if (e.type === 'touchmove') {
+                currentX = e.touches[0].clientX - initialX;
+                currentY = e.touches[0].clientY - initialY;
+            } else {
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+            }
+            xOffset = currentX;
+            yOffset = currentY;
+            waBtn.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+            waBtn.style.animation = 'none'; // Stop pulse when dragged
+        }
+    }
+
+    let startClickTime = 0;
+    waBtn.addEventListener('mousedown', (e) => { startClickTime = Date.now(); dragStart(e); });
+    waBtn.addEventListener('touchstart', (e) => { startClickTime = Date.now(); dragStart(e); }, { passive: false });
+
+    document.addEventListener('mouseup', dragEnd);
+    document.addEventListener('touchend', dragEnd);
+
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('touchmove', drag, { passive: false });
+
+    waBtn.addEventListener('click', function(e) {
+        // Prevent click if they held it for >200ms (considered a drag)
+        if (Date.now() - startClickTime > 200) {
+            e.preventDefault(); 
+        }
+    });
+});
 </script>
 @endsection
