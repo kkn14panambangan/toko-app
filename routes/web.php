@@ -81,6 +81,6 @@ Route::get('/setup-db-2026', function() {
 });
 
 Route::get('/update-price', function() {
-    \App\Models\Produk::where('harga', 5000)->update(['harga' => 7000]);
+    \App\Models\Product::where('harga', 5000)->update(['harga' => 7000]);
     return "Updated";
 });
