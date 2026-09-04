@@ -1,0 +1,43 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "api/index.php",
+            "use": "vercel-php@0.7.2"
+        },
+        {
+            "src": "public/**",
+            "use": "@vercel/static"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/build/(.*)",
+            "dest": "/public/build/$1"
+        },
+        {
+            "src": "/storage/(.*)",
+            "dest": "/public/storage/$1"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/api/index.php"
+        }
+    ],
+    "env": {
+        "APP_ENV": "production",
+        "APP_DEBUG": "true",
+        "APP_KEY": "base64:3+rlRq7uDDlUGqqKxSqTJCrXO+XAImGPoakeakEdYBo=",
+        "LOG_CHANNEL": "errorlog",
+        "VIEW_COMPILED_PATH": "/tmp/storage/framework/views",
+        "CACHE_STORE": "array",
+        "SESSION_DRIVER": "cookie",
+        "QUEUE_CONNECTION": "sync",
+        "DB_CONNECTION": "pgsql",
+        "DB_HOST": "aws-0-ap-northeast-2.pooler.supabase.com",
+        "DB_PORT": "6543",
+        "DB_DATABASE": "postgres",
+        "DB_USERNAME": "postgres.vmbeqfvinubobtatzsin",
+        "DB_PASSWORD": "toko-app2026"
+    }
+}
