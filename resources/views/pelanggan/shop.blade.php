@@ -412,4 +412,29 @@ document.querySelectorAll('.grab-toggle-btn').forEach(btn => {
     });
 });
 </script>
+
+@php
+    $cart = session()->get('cart', []);
+    $cartTotal = collect($cart)->sum(fn($item) => $item['harga'] * $item['quantity']);
+    $cartCount = collect($cart)->sum('quantity');
+@endphp
+
+@if($cartCount > 0)
+<!-- Sticky Cart Bar (GrabFood Style) -->
+<a href="{{ route('pelanggan.cart') }}" class="text-decoration-none" id="cart-bar">
+    <div style="position: fixed; bottom: 0; left: 0; right: 0; background: #00880F; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; z-index: 1040; box-shadow: 0 -4px 12px rgba(0,0,0,0.15);">
+        <div class="d-flex align-items-center gap-3">
+            <div style="background: rgba(255,255,255,0.2); border-radius: 8px; padding: 4px 10px; font-weight: 700; color: white; font-size: 0.9rem;">
+                {{ $cartCount }} item
+            </div>
+            <span style="color: rgba(255,255,255,0.85); font-size: 0.8rem;">Lihat keranjang</span>
+        </div>
+        <div style="color: white; font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 8px;">
+            Rp {{ number_format($cartTotal, 0, ',', '.') }}
+            <i class="fas fa-shopping-basket" style="background: white; color: #00880F; padding: 6px 8px; border-radius: 8px; font-size: 0.9rem;"></i>
+        </div>
+    </div>
+</a>
+@endif
+
 @endsection
