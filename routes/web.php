@@ -25,6 +25,9 @@ Route::get('/', [ShopController::class, 'index'])->name('home');
 // ==========================================
 Route::prefix('pelanggan')->name('pelanggan.')->group(function () {
     Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+    Route::get('/qr-menu', function () {
+        return view('pelanggan.qr-menu');
+    })->name('qr-menu');
     Route::get('/products/{id}', [ShopController::class, 'show'])->name('products.show');
     Route::post('/cart/add', [ShopController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart', [ShopController::class, 'cart'])->name('cart');

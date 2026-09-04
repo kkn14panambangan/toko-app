@@ -370,7 +370,7 @@
 
 <!-- Action Buttons -->
     <div class="grab-action-buttons mt-2">
-        <a href="{{ asset('qr-menu.png') }}" target="_blank" class="grab-action-btn text-decoration-none w-100 justify-content-center">
+        <a href="{{ route('pelanggan.qr-menu') }}" class="grab-action-btn text-decoration-none w-100 justify-content-center">
             <i class="fas fa-qrcode text-muted"></i> Lihat QR Menu
         </a>
     </div>
