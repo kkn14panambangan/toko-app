@@ -254,8 +254,9 @@
     <div class="store-meta">
         <i class="fas fa-star text-warning me-1"></i> <span class="fw-bold me-1 text-dark">4.9</span> (48rb+) <i class="fas fa-chevron-right ms-2 text-muted" style="font-size: 0.7rem;"></i>
     </div>
-    <div class="store-meta text-muted mb-3" style="font-size: 0.8rem;">
-        <i class="fas fa-map-marker-alt me-1"></i> Dusun 2 blok cantilan balong
+    <div class="store-meta text-muted mb-3" style="font-size: 0.8rem; line-height: 1.4;">
+        <i class="fas fa-map-marker-alt me-2 mt-1" style="float: left;"></i> 
+        <span style="display: block; margin-left: 20px;">Dusun 2 blok cantilan balong RT 02 RW 04 Desa panambangan kec. sedong kab. cirebon Jawa barat, indonesia</span>
     </div>
 
 <!-- Action Buttons -->
