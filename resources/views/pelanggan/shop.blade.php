@@ -270,27 +270,67 @@
     /* Floating WhatsApp Button */
     .floating-wa-btn {
         position: fixed;
-        bottom: 80px;
+        bottom: 95px; /* Adjusted to avoid overlap with Menu & Cart */
         right: 20px;
         background-color: #25D366;
         color: white;
         border-radius: 50%;
-        width: 55px;
-        height: 55px;
+        width: 56px;
+        height: 56px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.8rem;
+        font-size: 2rem;
         box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
         z-index: 1050;
         text-decoration: none;
-        transition: transform 0.2s;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        animation: pulse-wa 2s infinite;
     }
 
     .floating-wa-btn:hover {
-        transform: scale(1.1);
+        transform: scale(1.15) rotate(5deg);
         color: white;
+        animation: none;
     }
+
+    @keyframes pulse-wa {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+        70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+    
+    /* Social Media Hover */
+    .social-badge {
+        transition: all 0.2s ease-in-out;
+    }
+    .social-badge:hover {
+        transform: translateY(-2px);
+        background-color: #E5E7EB !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    
+    /* Smooth Scroll */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    /* Fade In Animation for Items */
+    .grab-item {
+        animation: fadeInItem 0.5s ease-out forwards;
+        opacity: 0;
+    }
+    @keyframes fadeInItem {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    /* Staggered animation delays */
+    .grab-item:nth-child(1) { animation-delay: 0.1s; }
+    .grab-item:nth-child(2) { animation-delay: 0.2s; }
+    .grab-item:nth-child(3) { animation-delay: 0.3s; }
+    .grab-item:nth-child(4) { animation-delay: 0.4s; }
+    .grab-item:nth-child(n+5) { animation-delay: 0.5s; }
+
 </style>
 
 <!-- Top Header Cover -->
@@ -313,13 +353,13 @@
 
 <!-- Social Media Info -->
     <div class="d-flex flex-wrap gap-2 mt-3 mb-2" style="font-size: 0.85rem;">
-        <a href="https://www.instagram.com/kknpanambangan14_umc" target="_blank" class="text-decoration-none text-dark d-flex align-items-center bg-light px-2 py-1 rounded-pill border">
+        <a href="https://www.instagram.com/kknpanambangan14_umc" target="_blank" class="text-decoration-none text-dark d-flex align-items-center bg-light px-2 py-1 rounded-pill border social-badge">
             <i class="fab fa-instagram text-danger me-1"></i> @kknpanambangan14_umc
         </a>
-        <a href="https://www.tiktok.com/@kkn.panambangan_umc" target="_blank" class="text-decoration-none text-dark d-flex align-items-center bg-light px-2 py-1 rounded-pill border">
+        <a href="https://www.tiktok.com/@kkn.panambangan_umc" target="_blank" class="text-decoration-none text-dark d-flex align-items-center bg-light px-2 py-1 rounded-pill border social-badge">
             <i class="fab fa-tiktok me-1"></i> kkn.panambangan_umc
         </a>
-        <a href="https://www.youtube.com/@KKNPANAMBANGAN14UMC" target="_blank" class="text-decoration-none text-dark d-flex align-items-center bg-light px-2 py-1 rounded-pill border">
+        <a href="https://www.youtube.com/@KKNPANAMBANGAN14UMC" target="_blank" class="text-decoration-none text-dark d-flex align-items-center bg-light px-2 py-1 rounded-pill border social-badge">
             <i class="fab fa-youtube text-danger me-1"></i> KKNPANAMBANGAN14UMC
         </a>
     </div>
