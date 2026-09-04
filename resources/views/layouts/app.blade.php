@@ -10,8 +10,7 @@
 <body>
     <!-- Navbar -->
 <!-- Navbar -->
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #4A8A34;">
     <div class="container">
         <a class="navbar-brand" href="{{ route('home') }}">
             <i class="fas fa-store me-2"></i>Kembang Tahu Pak Ujang
@@ -58,7 +57,7 @@
     </main>
 
     <!-- Footer (Hide on mobile since bottom nav takes over) -->
-    <footer class="bg-dark text-white text-center py-3 mt-auto d-none d-md-block">
+    <footer class="text-white text-center py-3 mt-auto d-none d-md-block" style="background-color: #4A8A34;">
         <div class="container">
             <p class="mb-0">&copy; {{ date('Y') }} Kembang Tahu Pak Ujang</p>
         </div>
@@ -67,19 +66,19 @@
     <!-- Mobile Bottom Navigation -->
     <nav class="navbar fixed-bottom bg-white border-top shadow-lg d-md-none pb-2 pt-2 px-3">
         <div class="container-fluid d-flex justify-content-between">
-            <a href="{{ route('pelanggan.shop') }}" class="text-decoration-none text-center flex-fill {{ request()->routeIs('pelanggan.shop') ? 'text-primary' : 'text-secondary' }}">
+            <a href="{{ route('pelanggan.shop') }}" class="text-decoration-none text-center flex-fill {{ request()->routeIs('pelanggan.shop') ? 'text-success' : 'text-secondary' }}" style="{{ request()->routeIs('pelanggan.shop') ? 'color: #4A8A34 !important;' : '' }}">
                 <i class="fas fa-store d-block mb-1 fs-5"></i>
                 <small style="font-size: 0.75rem; font-weight: 600;">Toko</small>
             </a>
-            <a href="{{ route('pelanggan.cart') }}" class="text-decoration-none text-center flex-fill {{ request()->routeIs('pelanggan.cart') ? 'text-primary' : 'text-secondary' }}">
+            <a href="{{ route('pelanggan.cart') }}" class="text-decoration-none text-center flex-fill {{ request()->routeIs('pelanggan.cart') ? 'text-success' : 'text-secondary' }}" style="{{ request()->routeIs('pelanggan.cart') ? 'color: #4A8A34 !important;' : '' }}">
                 <i class="fas fa-shopping-cart d-block mb-1 fs-5"></i>
                 <small style="font-size: 0.75rem; font-weight: 600;">Keranjang</small>
             </a>
-            <a href="{{ route('pelanggan.history') }}" class="text-decoration-none text-center flex-fill {{ request()->routeIs('pelanggan.history') ? 'text-primary' : 'text-secondary' }}">
+            <a href="{{ route('pelanggan.history') }}" class="text-decoration-none text-center flex-fill {{ request()->routeIs('pelanggan.history') ? 'text-success' : 'text-secondary' }}" style="{{ request()->routeIs('pelanggan.history') ? 'color: #4A8A34 !important;' : '' }}">
                 <i class="fas fa-history d-block mb-1 fs-5"></i>
                 <small style="font-size: 0.75rem; font-weight: 600;">Riwayat</small>
             </a>
-            <a href="{{ auth()->check() && auth()->user()->role == 'admin' ? route('admin.dashboard') : route('admin.login') }}" class="text-decoration-none text-center flex-fill {{ request()->routeIs('admin.*') ? 'text-primary' : 'text-secondary' }}">
+            <a href="{{ auth()->check() && auth()->user()->role == 'admin' ? route('admin.dashboard') : route('admin.login') }}" class="text-decoration-none text-center flex-fill {{ request()->routeIs('admin.*') ? 'text-success' : 'text-secondary' }}" style="{{ request()->routeIs('admin.*') ? 'color: #4A8A34 !important;' : '' }}">
                 <i class="fas fa-user-shield d-block mb-1 fs-5"></i>
                 <small style="font-size: 0.75rem; font-weight: 600;">Admin</small>
             </a>

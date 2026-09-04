@@ -4,7 +4,7 @@
 <style>
     /* Cafe Menu Styles */
     body {
-        background-color: #f4f6f8;
+        background-color: #FAE3C6; /* Soft Peach */
         padding-bottom: 80px; /* Space for bottom nav */
     }
     
@@ -22,7 +22,7 @@
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 100%);
+        background: linear-gradient(to top, rgba(198, 42, 41, 0.85) 0%, rgba(74, 138, 52, 0.4) 100%);
     }
 
     .resto-info {
@@ -51,10 +51,10 @@
         position: sticky;
         top: 0;
         z-index: 1020;
-        background: rgba(244, 246, 248, 0.95);
+        background: rgba(250, 227, 198, 0.95); /* Match peach body */
         backdrop-filter: blur(10px);
         padding: 12px 0;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        box-shadow: 0 4px 10px rgba(198, 42, 41, 0.08);
     }
 
     .category-scroll {
@@ -74,31 +74,33 @@
         white-space: nowrap;
         padding: 8px 20px;
         border-radius: 25px;
-        border: none;
+        border: 2px solid transparent;
         background: white;
-        color: #555;
-        font-weight: 600;
+        color: #C62A29; /* Red text */
+        font-weight: 700;
         font-size: 0.9rem;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 8px rgba(198, 42, 41, 0.1);
         transition: all 0.3s ease;
     }
 
     .btn-category.active {
-        background: #8b5a2b; /* Warm brown */
+        background: #4A8A34; /* Green */
         color: white;
+        border-color: #4A8A34;
+        box-shadow: 0 4px 12px rgba(74, 138, 52, 0.3);
     }
 
     /* Product List View */
     .menu-item {
         background: white;
-        border-radius: 15px;
+        border-radius: 20px;
         padding: 12px;
         margin-bottom: 12px;
         display: flex;
         gap: 15px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        box-shadow: 0 4px 12px rgba(198, 42, 41, 0.08);
         transition: transform 0.2s;
-        border: 1px solid rgba(0,0,0,0.02);
+        border: 2px solid transparent;
     }
     
     .menu-item:active {
@@ -147,28 +149,28 @@
     }
 
     .menu-price {
-        font-weight: 700;
-        color: #8b5a2b;
-        font-size: 1.05rem;
+        font-weight: 800;
+        color: #C62A29; /* Red Price */
+        font-size: 1.1rem;
     }
 
     .btn-add {
-        background: #8b5a2b;
+        background: #4A8A34; /* Green button */
         color: white;
         border: none;
-        width: 32px;
-        height: 32px;
+        width: 36px;
+        height: 36px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1rem;
-        box-shadow: 0 2px 5px rgba(139, 90, 43, 0.4);
+        font-size: 1.1rem;
+        box-shadow: 0 4px 10px rgba(74, 138, 52, 0.4);
         transition: all 0.2s;
     }
     
     .btn-add:active {
-        background: #6b4420;
+        background: #386e26;
         transform: scale(0.9);
     }
 
@@ -181,9 +183,9 @@
 <!-- Hero Banner (Resto Style) -->
 <div class="resto-header">
     <div class="resto-info">
-        <h1 class="fw-bold mb-0 h3">{{ 'Kembang Tahu Pak Ujang' }}</h1>
-        <h2 class="h6 mb-2 text-warning fw-semibold fst-italic">Khas Panambangan</h2>
-        <p class="mb-2 text-white-50" style="font-size: 0.75rem; line-height: 1.4;"><i class="fas fa-map-marker-alt me-1"></i>Dusun 2 blok.cantilan balong RT 02 RW 04 Desa panambangan kec.sedong kab.cirebon Jawa barat, indonesia</p>
+        <h1 class="fw-bold mb-0 h3 text-white" style="text-shadow: 1px 1px 4px rgba(0,0,0,0.5);">{{ 'Kembang Tahu Pak Ujang' }}</h1>
+        <h2 class="h6 mb-2 fw-bold fst-italic" style="color: #FAE3C6; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Khas Panambangan</h2>
+        <p class="mb-2 text-white" style="font-size: 0.75rem; line-height: 1.4; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);"><i class="fas fa-map-marker-alt me-1 text-warning"></i>Dusun 2 blok.cantilan balong RT 02 RW 04 Desa panambangan kec.sedong kab.cirebon Jawa barat, indonesia</p>
         <div>
             <span class="info-badge"><i class="fas fa-star text-warning me-1"></i>4.9</span>
             <span class="info-badge"><i class="far fa-clock me-1"></i>{{ $setting->jam_buka ?? '08:00' }} - {{ $setting->jam_tutup ?? '17:00' }}</span>
@@ -253,8 +255,8 @@
 
 <!-- E-Catalog Info Section -->
 <div class="container py-4 mt-2 mb-4">
-    <div class="bg-white rounded-4 p-4 shadow-sm text-center border">
-        <h5 class="fw-bold mb-2" style="color: #8b5a2b;"><i class="fas fa-info-circle me-2"></i>Hubungi Kami</h5>
+    <div class="bg-white rounded-4 p-4 shadow text-center border-0" style="border-top: 5px solid #4A8A34 !important;">
+        <h5 class="fw-bold mb-2" style="color: #C62A29;"><i class="fas fa-info-circle me-2"></i>Hubungi Kami</h5>
         <p class="text-muted small mb-3">Pesan sekarang atau tanyakan menu melalui WhatsApp Bapak Ujang.</p>
         <a href="https://wa.me/6282213066810" target="_blank" class="btn btn-success btn-sm rounded-pill px-4 mb-3 fw-bold" style="background-color: #25D366; border: none;">
             <i class="fab fa-whatsapp me-2 fs-5 align-middle"></i> 082213066810
