@@ -181,7 +181,8 @@
 <!-- Hero Banner (Resto Style) -->
 <div class="resto-header">
     <div class="resto-info">
-        <h1 class="fw-bold mb-1 h3">{{ 'Kembang Tahu Pak Ujang' }}</h1>
+        <h1 class="fw-bold mb-0 h3">{{ 'Kembang Tahu Pak Ujang' }}</h1>
+        <h2 class="h6 mb-2 text-warning fw-semibold fst-italic">Khas Panambangan</h2>
         <p class="mb-2 text-white-50 small"><i class="fas fa-map-marker-alt me-1"></i>{{ $setting->alamat ?? 'Cirebon, Jawa Barat' }}</p>
         <div>
             <span class="info-badge"><i class="fas fa-star text-warning me-1"></i>4.9</span>
