@@ -334,7 +334,7 @@
                         </div>
                     @endif
 
-                    @php $inCart = isset($sessionCart[$product->id]) ? $sessionCart[$product->id]['quantity'] : 0; @endphp
+                    @php $inCart = isset($sessionCart[(string)$product->id]) ? (int)$sessionCart[(string)$product->id]['quantity'] : 0; @endphp
 
                     <!-- Cart Control -->
                     <div id="ctrl-{{ $product->id }}" class="cart-ctrl-wrapper">
