@@ -1,330 +1,349 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Google Fonts: Poppins -->
+<!-- Google Fonts: Inter (Lebih mirip GrabFood) -->
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
     body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #FAFAFA; /* Off-white / Clean background */
+        font-family: 'Inter', sans-serif;
+        background-color: #F3F4F6; /* Gray background */
         padding-bottom: 90px;
     }
 
-    /* Clean Header */
-    .clean-header {
-        height: 140px;
-        background: linear-gradient(135deg, #FAE3C6 0%, #F5C695 100%);
-        border-bottom-left-radius: 30px;
-        border-bottom-right-radius: 30px;
+    /* Grab Header Cover */
+    .grab-header {
+        height: 220px;
+        background: url('{{ Storage::url('logo.jpg') }}') center/cover no-repeat;
         position: relative;
     }
+    
+    .grab-header::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
+    }
 
-    /* Profile Avatar & Info */
-    .profile-container {
-        margin-top: -60px; /* Overlap the header */
-        text-align: center;
-        padding: 0 20px;
+    /* Floating Store Card */
+    .grab-store-card {
+        background: #FFFFFF;
+        border-radius: 24px;
+        margin: -60px 15px 15px 15px;
+        padding: 20px;
         position: relative;
         z-index: 10;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
     }
 
-    .profile-avatar {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        border: 4px solid #FFFFFF;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        object-fit: cover;
-        background: #fff;
-    }
-
-    .profile-title {
+    .store-title {
         font-weight: 800;
-        color: #2D3748;
-        margin-top: 15px;
-        margin-bottom: 2px;
-        font-size: 1.5rem;
-        letter-spacing: -0.5px;
-    }
-
-    .profile-subtitle {
-        color: #C62A29; /* Red accent */
-        font-weight: 600;
-        font-size: 0.9rem;
+        color: #1F2937;
+        font-size: 1.4rem;
         margin-bottom: 8px;
+        line-height: 1.2;
     }
 
-    .profile-address {
-        color: #718096;
-        font-size: 0.8rem;
-        line-height: 1.4;
-        max-width: 400px;
-        margin: 0 auto 15px auto;
-    }
-
-    .info-badges {
+    .store-meta {
+        font-size: 0.85rem;
+        color: #4B5563;
         display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    .badge-clean {
-        background: #FFFFFF;
-        color: #4A5568;
-        padding: 6px 15px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        border: 1px solid #EDF2F7;
-    }
-
-    .badge-clean i {
-        color: #F6AD55; /* Orange star */
-    }
-
-    /* Modern Sticky Categories */
-    .sticky-categories {
-        position: sticky;
-        top: 0;
-        z-index: 1020;
-        background: rgba(250, 250, 250, 0.95);
-        backdrop-filter: blur(8px);
-        padding: 15px 0;
-        border-bottom: 1px solid #EDF2F7;
-    }
-
-    .category-scroll {
-        display: flex;
-        overflow-x: auto;
-        gap: 12px;
-        padding: 0 20px;
-        scrollbar-width: none;
-    }
-    
-    .category-scroll::-webkit-scrollbar { display: none; }
-
-    .btn-category {
-        white-space: nowrap;
-        padding: 8px 24px;
-        border-radius: 30px;
-        border: 1px solid #E2E8F0;
-        background: #FFFFFF;
-        color: #4A5568;
-        font-weight: 500;
-        font-size: 0.9rem;
-        transition: all 0.2s ease;
-    }
-
-    .btn-category.active {
-        background: #C62A29; /* Red theme active */
-        color: #FFFFFF;
-        border-color: #C62A29;
-        font-weight: 600;
-        box-shadow: 0 4px 10px rgba(198, 42, 41, 0.2);
-    }
-
-    /* Clean Product Cards */
-    .menu-item {
-        background: #FFFFFF;
-        border-radius: 16px;
-        padding: 15px;
+        align-items: center;
         margin-bottom: 15px;
+    }
+
+    .grab-delivery-toggle {
         display: flex;
-        gap: 15px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.03); /* Super soft shadow */
-        border: 1px solid #F7FAFC;
-        transition: transform 0.2s;
+        background: #F3F4F6;
+        border-radius: 30px;
+        padding: 4px;
+        margin-bottom: 15px;
+    }
+
+    .grab-toggle-btn {
+        flex: 1;
+        text-align: center;
+        padding: 8px 0;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: 26px;
+        color: #4B5563;
+    }
+
+    .grab-toggle-btn.active {
+        background: #00B14F; /* Grab Green */
+        color: #FFFFFF;
+        box-shadow: 0 2px 4px rgba(0, 177, 79, 0.3);
+    }
+
+    .grab-action-buttons {
+        display: flex;
+        gap: 10px;
     }
     
-    .menu-item:active {
-        transform: scale(0.98);
+    .grab-action-btn {
+        padding: 8px 15px;
+        border-radius: 20px;
+        border: 1px solid #E5E7EB;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #374151;
+        background: #FFFFFF;
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
 
-    .menu-img-container {
-        width: 100px;
-        height: 100px;
-        flex-shrink: 0;
-        border-radius: 12px;
-        overflow: hidden;
-        background: #F7FAFC;
+    /* Menu Section Container */
+    .grab-menu-section {
+        background: #FFFFFF;
+        margin-top: 10px;
+        padding-top: 20px;
     }
 
-    .menu-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    .menu-section-title {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #111827;
+        padding: 0 20px 15px 20px;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    .menu-content {
-        flex-grow: 1;
+    /* Grab List Item */
+    .grab-item {
+        display: flex;
+        padding: 15px 20px;
+        border-bottom: 1px dashed #E5E7EB;
+        gap: 15px;
+    }
+    
+    .grab-item:last-child {
+        border-bottom: none;
+    }
+
+    .grab-item-content {
+        flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
     }
 
-    .menu-title {
+    .grab-item-title {
         font-weight: 700;
-        font-size: 1rem;
-        color: #2D3748;
-        margin-bottom: 4px;
+        font-size: 1.05rem;
+        color: #1F2937;
+        margin-bottom: 6px;
         line-height: 1.3;
     }
 
-    .menu-desc {
+    .grab-item-desc {
         font-size: 0.8rem;
-        color: #A0AEC0;
+        color: #6B7280;
+        margin-bottom: 8px;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        margin-bottom: 8px;
     }
 
-    .menu-price {
+    .grab-item-price {
         font-weight: 700;
-        color: #2D3748;
-        font-size: 1.1rem;
+        color: #111827;
+        font-size: 1rem;
+        margin-top: auto;
     }
 
-    .btn-add {
+    /* Grab Image & Add Button */
+    .grab-img-wrapper {
+        position: relative;
+        width: 110px;
+        height: 110px;
+        flex-shrink: 0;
+    }
+
+    .grab-item-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+        background: #F3F4F6;
+    }
+
+    .grab-btn-add {
+        position: absolute;
+        bottom: -12px;
+        left: 50%;
+        transform: translateX(-50%);
         background: #FFFFFF;
-        color: #4A8A34; /* Green Add button */
-        border: 1.5px solid #4A8A34;
-        padding: 4px 16px;
+        color: #00B14F;
+        border: 1.5px solid #00B14F;
+        padding: 4px 18px;
         border-radius: 20px;
-        font-weight: 600;
+        font-weight: 700;
         font-size: 0.85rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        white-space: nowrap;
         transition: all 0.2s;
+        z-index: 2;
     }
     
-    .btn-add:active {
-        background: #4A8A34;
-        color: #FFFFFF;
+    .grab-btn-add:active {
+        background: #F0FDF4;
+        transform: translateX(-50%) scale(0.95);
+    }
+    
+    .grab-btn-add:disabled {
+        border-color: #D1D5DB;
+        color: #9CA3AF;
+        background: #F3F4F6;
+        box-shadow: none;
     }
 
-    .btn-add:disabled {
-        border-color: #CBD5E0;
-        color: #CBD5E0;
+    /* Floating Red Menu Button */
+    .floating-menu-btn {
+        position: fixed;
+        bottom: 80px; /* Above bottom nav */
+        left: 50%;
+        transform: translateX(-50%);
+        background: #E02020; /* Grab Red / Warning color */
+        color: #FFFFFF;
+        padding: 10px 24px;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        box-shadow: 0 4px 12px rgba(224, 32, 32, 0.4);
+        z-index: 1030;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        transition: transform 0.2s;
+    }
+    
+    .floating-menu-btn:active {
+        transform: translateX(-50%) scale(0.95);
     }
 </style>
 
-<!-- Clean Header Background -->
-<div class="clean-header"></div>
+<!-- Top Header Cover -->
+<div class="grab-header">
+    <!-- Back button & Icons like in Grab -->
+    <div class="d-flex justify-content-between p-3 position-relative z-3">
+        <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 36px; height: 36px;">
+            <i class="fas fa-arrow-left text-dark"></i>
+        </div>
+        <div class="d-flex gap-2">
+            <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 36px; height: 36px;">
+                <i class="fas fa-search text-dark"></i>
+            </div>
+            <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 36px; height: 36px;">
+                <i class="far fa-heart text-dark"></i>
+            </div>
+            <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 36px; height: 36px;">
+                <i class="fas fa-share-alt text-dark"></i>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- Profile Section -->
-<div class="profile-container">
-    <img src="{{ Storage::url('logo.jpg') }}" alt="Logo Toko" class="profile-avatar">
-    <h1 class="profile-title">Kembang Tahu Pak Ujang</h1>
-    <div class="profile-subtitle">Khas Panambangan</div>
-    <p class="profile-address">
-        <i class="fas fa-map-marker-alt me-1 text-danger"></i> Dusun 2 blok.cantilan balong RT 02 RW 04 Desa panambangan kec.sedong kab.cirebon Jawa barat, indonesia
-    </p>
+<!-- Floating Store Card -->
+<div class="grab-store-card">
+    <h1 class="store-title">Kembang Tahu Pak Ujang</h1>
+    <div class="store-meta">
+        <i class="fas fa-star text-warning me-1"></i> <span class="fw-bold me-1 text-dark">4.9</span> (48rb+) <i class="fas fa-chevron-right ms-2 text-muted" style="font-size: 0.7rem;"></i>
+    </div>
+    <div class="store-meta text-muted mb-3" style="font-size: 0.8rem;">
+        <i class="fas fa-map-marker-alt me-1"></i> Dusun 2 blok cantilan balong
+    </div>
+
+    <!-- Toggle Delivery/Pickup -->
+    <div class="grab-delivery-toggle">
+        <div class="grab-toggle-btn active">Delivery</div>
+        <div class="grab-toggle-btn">Pickup <i class="fas fa-info-circle ms-1 text-muted" style="font-size: 0.7rem;"></i></div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="grab-action-buttons">
+        <a href="https://wa.me/6282213066810" target="_blank" class="grab-action-btn text-decoration-none">
+            <i class="fab fa-whatsapp text-success fs-5"></i> Chat WhatsApp
+        </a>
+        <a href="{{ Storage::url('qr-menu.png') }}" target="_blank" class="grab-action-btn text-decoration-none">
+            <i class="fas fa-qrcode text-muted"></i> QR Menu
+        </a>
+    </div>
+</div>
+
+<!-- Promo Banners (Static mock for Grab feel) -->
+<div class="px-3 mb-3 d-flex gap-2" style="overflow-x: auto; scrollbar-width: none;">
+    <div class="bg-white rounded-4 p-2 px-3 border shadow-sm flex-shrink-0" style="min-width: 200px;">
+        <span class="text-danger fw-bold" style="font-size: 0.75rem;"><i class="fas fa-ticket-alt me-1"></i> Diskon makanan 43%</span>
+    </div>
+    <div class="bg-white rounded-4 p-2 px-3 border shadow-sm flex-shrink-0" style="min-width: 200px;">
+        <span class="text-danger fw-bold" style="font-size: 0.75rem;"><i class="fas fa-motorcycle me-1"></i> Gratis Ongkir</span>
+    </div>
+</div>
+
+<!-- Menu Section -->
+<div class="grab-menu-section" id="menu-section">
+    <h2 class="menu-section-title">Semua Menu</h2>
     
-    <div class="info-badges">
-        <div class="badge-clean">
-            <i class="fas fa-star"></i> 4.9
-        </div>
-        <div class="badge-clean">
-            <i class="far fa-clock me-1 text-muted"></i> {{ $setting->jam_buka ?? '08:00' }} - {{ $setting->jam_tutup ?? '17:00' }}
-        </div>
-    </div>
-</div>
-
-<!-- Sticky Categories -->
-<div class="sticky-categories">
-    <div class="category-scroll">
-        <button class="btn-category active" data-category="all" onclick="filterCategory('all')">Paling Laris</button>
-        <button class="btn-category" data-category="segar" onclick="filterCategory('segar')">Kembang Tahu Segar</button>
-        <button class="btn-category" data-category="kering" onclick="filterCategory('kering')">Kembang Tahu Kering</button>
-        <button class="btn-category" data-category="olahan" onclick="filterCategory('olahan')">Olahan</button>
-        <button class="btn-category" data-category="kulit" onclick="filterCategory('kulit')">Kulit Tahu</button>
-    </div>
-</div>
-
-<!-- Product List -->
-<div class="container mt-4 px-3">
-    <div class="row" id="productsContainer">
+    <div class="grab-list-container pb-5">
         @forelse($products as $product)
-        <div class="col-12 col-md-6 col-lg-4 product-item" data-category="{{ $product->kategori }}">
-            <div class="menu-item">
-                <div class="menu-content pe-2">
-                    <div>
-                        <h3 class="menu-title">{{ $product->nama_produk }}</h3>
-                        <p class="menu-desc">{{ $product->deskripsi }}</p>
+        <div class="grab-item">
+            <!-- Left: Text -->
+            <div class="grab-item-content">
+                @if($product->kategori == 'segar')
+                    <div class="text-danger mb-1" style="font-size: 0.7rem; font-weight: 700;">
+                        <i class="fas fa-shopping-bag me-1"></i> Sering dibeli lagi
                     </div>
-                    <div class="d-flex justify-content-between align-items-center mt-auto">
-                        <span class="menu-price">Rp {{ number_format($product->harga, 0, ',', '.') }}</span>
-                        
-                        <form action="{{ route('pelanggan.cart.add') }}" method="POST" class="m-0">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <input type="hidden" name="quantity" value="1">
-                            <button type="submit" class="btn-add" {{ $product->stok <= 0 ? 'disabled' : '' }}>
-                                {{ $product->stok <= 0 ? 'Habis' : 'Tambah' }}
-                            </button>
-                        </form>
+                @endif
+                <h3 class="grab-item-title">{{ $product->nama_produk }}</h3>
+                <p class="grab-item-desc">{{ $product->deskripsi }}</p>
+                <div class="grab-item-price">{{ number_format($product->harga, 0, ',', '.') }}</div>
+            </div>
+            
+            <!-- Right: Image & Button -->
+            <div class="grab-img-wrapper">
+                @if($product->gambar)
+                    <img src="{{ Storage::url($product->gambar) }}" class="grab-item-img" alt="{{ $product->nama_produk }}">
+                @else
+                    <div class="grab-item-img d-flex align-items-center justify-content-center text-muted border">
+                        <i class="fas fa-image fa-2x"></i>
                     </div>
-                </div>
-                <div class="menu-img-container">
-                    @if($product->gambar)
-                        <img src="{{ Storage::url($product->gambar) }}" class="menu-img" alt="{{ $product->nama_produk }}">
-                    @else
-                        <div class="w-100 h-100 d-flex align-items-center justify-content-center text-muted" style="background:#EDF2F7;">
-                            <i class="fas fa-image fa-2x"></i>
-                        </div>
-                    @endif
-                    @if($product->stok <= 0)
-                        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center" style="border-radius:12px;">
-                            <span class="badge bg-danger small">Habis</span>
-                        </div>
-                    @endif
-                </div>
+                @endif
+                
+                <form action="{{ route('pelanggan.cart.add') }}" method="POST" class="m-0">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="grab-btn-add" {{ $product->stok <= 0 ? 'disabled' : '' }}>
+                        {{ $product->stok <= 0 ? 'Habis' : 'Tambah' }}
+                    </button>
+                </form>
             </div>
         </div>
         @empty
-        <div class="col-12 text-center py-5">
-            <i class="fas fa-box-open fa-3x text-muted mb-3 opacity-50"></i>
-            <p class="text-muted font-monospace">Menu belum tersedia</p>
+        <div class="text-center py-5">
+            <i class="fas fa-store-slash fa-3x text-muted mb-3 opacity-50"></i>
+            <p class="text-muted fw-bold">Belum ada menu tersedia</p>
         </div>
         @endforelse
     </div>
 </div>
 
-<!-- Modern Contact Section -->
-<div class="container py-4 mt-2 mb-4">
-    <div class="bg-white rounded-4 p-4 shadow-sm text-center border-0">
-        <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded-circle mb-3" style="width: 50px; height: 50px;">
-            <i class="fab fa-whatsapp fs-3"></i>
-        </div>
-        <h5 class="fw-bold mb-2 text-dark">Hubungi Kami</h5>
-        <p class="text-muted small mb-4">Pesan sekarang atau tanyakan ketersediaan menu langsung melalui WhatsApp Bapak Ujang.</p>
-        <a href="https://wa.me/6282213066810" target="_blank" class="btn btn-success rounded-pill px-4 py-2 fw-bold w-100" style="background-color: #25D366; border: none; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);">
-            Chat 082213066810
-        </a>
-        
-        <hr class="my-4 text-muted opacity-10">
-        
-        <a href="{{ Storage::url('qr-menu.png') }}" download target="_blank" class="btn btn-light btn-sm rounded-pill px-4 text-muted border">
-            <i class="fas fa-qrcode me-2"></i> Simpan QR Menu
-        </a>
-    </div>
-</div>
+<!-- Floating Menu Button -->
+<a href="#menu-section" class="floating-menu-btn">
+    <i class="fas fa-concierge-bell"></i> Menu
+</a>
 
 <script>
-function filterCategory(category) {
-    document.querySelectorAll('.btn-category').forEach(btn => btn.classList.remove('active'));
-    document.querySelector(`[data-category="${category}"]`).classList.add('active');
-    
-    document.querySelectorAll('.product-item').forEach(product => {
-        if (category === 'all' || product.dataset.category === category) {
-            product.style.display = 'block';
-        } else {
-            product.style.display = 'none';
-        }
+// Mock interaction for Delivery/Pickup toggle
+document.querySelectorAll('.grab-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.grab-toggle-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
     });
-}
+});
 </script>
 @endsection

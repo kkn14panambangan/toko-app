@@ -11,8 +11,8 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-<!-- Navbar -->
+    <!-- Navbar (Hide on Shop Page for GrabFood full-screen feel) -->
+@if(!request()->routeIs('pelanggan.shop'))
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
     <div class="container">
         <a class="navbar-brand fw-bold text-dark" href="{{ route('home') }}">
@@ -53,6 +53,7 @@
         </div>
     </div>
 </nav>
+@endif
 
     <!-- Content -->
     <main class="py-4 pb-5 mb-5">
