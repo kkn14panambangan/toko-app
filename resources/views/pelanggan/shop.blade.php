@@ -257,14 +257,8 @@
         <i class="fas fa-map-marker-alt me-1"></i> Dusun 2 blok cantilan balong
     </div>
 
-    <!-- Toggle Delivery/Pickup -->
-    <div class="grab-delivery-toggle">
-        <div class="grab-toggle-btn active">Delivery</div>
-        <div class="grab-toggle-btn">Pickup <i class="fas fa-info-circle ms-1 text-muted" style="font-size: 0.7rem;"></i></div>
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="grab-action-buttons">
+<!-- Action Buttons -->
+    <div class="grab-action-buttons mt-3">
         <a href="https://wa.me/6282213066810" target="_blank" class="grab-action-btn text-decoration-none">
             <i class="fab fa-whatsapp text-success fs-5"></i> Chat WhatsApp
         </a>
@@ -274,15 +268,7 @@
     </div>
 </div>
 
-<!-- Promo Banners (Static mock for Grab feel) -->
-<div class="px-3 mb-3 d-flex gap-2" style="overflow-x: auto; scrollbar-width: none;">
-    <div class="bg-white rounded-4 p-2 px-3 border shadow-sm flex-shrink-0" style="min-width: 200px;">
-        <span class="text-danger fw-bold" style="font-size: 0.75rem;"><i class="fas fa-ticket-alt me-1"></i> Diskon makanan 43%</span>
-    </div>
-    <div class="bg-white rounded-4 p-2 px-3 border shadow-sm flex-shrink-0" style="min-width: 200px;">
-        <span class="text-danger fw-bold" style="font-size: 0.75rem;"><i class="fas fa-motorcycle me-1"></i> Gratis Ongkir</span>
-    </div>
-</div>
+
 
 <!-- Menu Section -->
 <div class="grab-menu-section" id="menu-section">
