@@ -1,231 +1,277 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Hero Banner -->
-<div class="position-relative overflow-hidden">
-    <div class="text-white py-5 position-relative" style="background: url('{{ Storage::url('logo.jpg') }}') center/cover no-repeat;">
-        <!-- Overlay -->
-        <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0, 0, 0, 0.7);"></div>
-        
-        <div class="container position-relative" style="z-index: 1;">
-            <div class="row align-items-center">
-                <div class="col-lg-8">
-                    <h1 class="display-4 fw-bold mb-2">{{ $setting->nama_toko ?? 'Kembang Tahu 65' }}</h1>
-                    <p class="lead mb-0">{{ $setting->deskripsi ?? 'Kembang Tahu Segar' }}</p>
-                </div>
-                <div class="col-lg-4 text-lg-end d-none d-lg-block">
-                    <i class="fas fa-store fa-5x opacity-50"></i>
-                </div>
-            </div>
-        </div>
-    </div>
+<style>
+    /* Cafe Menu Styles */
+    body {
+        background-color: #f4f6f8;
+        padding-bottom: 80px; /* Space for bottom nav */
+    }
     
-    <!-- Store Info Bar -->
-    <div class="bg-white shadow-sm border-bottom">
-        <div class="container">
-            <div class="py-3">
-                <div class="row align-items-center">
-                    <div class="col-md-4">
-                        <div class="d-flex align-items-center">
-                            <i class="far fa-clock text-primary me-2 fa-lg"></i>
-                            <div>
-                                <small class="text-muted d-block">Jam Buka</small>
-                                <span class="fw-semibold">{{ $setting->jam_buka ?? '08:00' }} - {{ $setting->jam_tutup ?? '17:00' }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-map-marker-alt text-danger me-2 fa-lg"></i>
-                            <div>
-                                <small class="text-muted d-block">Lokasi</small>
-                                <span class="fw-semibold">{{ $setting->alamat ?? 'Kota Anda' }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-phone text-success me-2 fa-lg"></i>
-                            <div>
-                                <small class="text-muted d-block">Kontak</small>
-                                <span class="fw-semibold">{{ $setting->telepon ?? '0822-1306-6810' }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    .resto-header {
+        position: relative;
+        height: 220px;
+        background: url('{{ Storage::url('logo.jpg') }}') center/cover no-repeat;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    
+    .resto-header::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 100%);
+    }
+
+    .resto-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 20px;
+        color: white;
+        z-index: 1;
+    }
+
+    .info-badge {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        border-radius: 20px;
+        padding: 5px 12px;
+        font-size: 0.8rem;
+        display: inline-block;
+        margin-right: 5px;
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    /* Sticky Categories */
+    .sticky-categories {
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        background: rgba(244, 246, 248, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 12px 0;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    }
+
+    .category-scroll {
+        display: flex;
+        overflow-x: auto;
+        gap: 10px;
+        padding: 0 15px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .category-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    .btn-category {
+        white-space: nowrap;
+        padding: 8px 20px;
+        border-radius: 25px;
+        border: none;
+        background: white;
+        color: #555;
+        font-weight: 600;
+        font-size: 0.9rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+
+    .btn-category.active {
+        background: #8b5a2b; /* Warm brown */
+        color: white;
+    }
+
+    /* Product List View */
+    .menu-item {
+        background: white;
+        border-radius: 15px;
+        padding: 12px;
+        margin-bottom: 12px;
+        display: flex;
+        gap: 15px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        transition: transform 0.2s;
+        border: 1px solid rgba(0,0,0,0.02);
+    }
+    
+    .menu-item:active {
+        transform: scale(0.98);
+    }
+
+    .menu-img-container {
+        width: 100px;
+        height: 100px;
+        flex-shrink: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        position: relative;
+        background: #eee;
+    }
+
+    .menu-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .menu-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .menu-title {
+        font-weight: 700;
+        font-size: 1.05rem;
+        margin-bottom: 4px;
+        color: #2c3e50;
+        line-height: 1.2;
+    }
+
+    .menu-desc {
+        font-size: 0.8rem;
+        color: #7f8c8d;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 8px;
+    }
+
+    .menu-price {
+        font-weight: 700;
+        color: #8b5a2b;
+        font-size: 1.05rem;
+    }
+
+    .btn-add {
+        background: #8b5a2b;
+        color: white;
+        border: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        box-shadow: 0 2px 5px rgba(139, 90, 43, 0.4);
+        transition: all 0.2s;
+    }
+    
+    .btn-add:active {
+        background: #6b4420;
+        transform: scale(0.9);
+    }
+
+    .btn-add:disabled {
+        background: #ccc;
+        box-shadow: none;
+    }
+</style>
+
+<!-- Hero Banner (Resto Style) -->
+<div class="resto-header">
+    <div class="resto-info">
+        <h1 class="fw-bold mb-1 h3">{{ $setting->nama_toko ?? 'Kembang Tahu 65' }}</h1>
+        <p class="mb-2 text-white-50 small"><i class="fas fa-map-marker-alt me-1"></i>{{ $setting->alamat ?? 'Cirebon, Jawa Barat' }}</p>
+        <div>
+            <span class="info-badge"><i class="fas fa-star text-warning me-1"></i>4.9</span>
+            <span class="info-badge"><i class="far fa-clock me-1"></i>{{ $setting->jam_buka ?? '08:00' }} - {{ $setting->jam_tutup ?? '17:00' }}</span>
         </div>
     </div>
 </div>
 
-<!-- Category Filter -->
-<div class="container py-4">
-    <div class="text-center mb-4">
-        <h2 class="fw-bold mb-2">Kategori Produk</h2>
-        <p class="text-muted">Pilih kategori untuk melihat produk</p>
+<!-- Sticky Categories -->
+<div class="sticky-categories">
+    <div class="category-scroll">
+        <button class="btn-category active" data-category="all" onclick="filterCategory('all')">Menu Kami</button>
+        <button class="btn-category" data-category="segar" onclick="filterCategory('segar')">Kembang Tahu Segar</button>
+        <button class="btn-category" data-category="kering" onclick="filterCategory('kering')">Kembang Tahu Kering</button>
+        <button class="btn-category" data-category="olahan" onclick="filterCategory('olahan')">Olahan</button>
+        <button class="btn-category" data-category="kulit" onclick="filterCategory('kulit')">Kulit Tahu</button>
     </div>
-    
-    <div class="d-flex justify-content-center gap-2 mb-5 flex-wrap">
-        <button class="btn btn-category active" data-category="all" onclick="filterCategory('all')">
-            <i class="fas fa-th me-2"></i>Semua
-        </button>
-        <button class="btn btn-category" data-category="segar" onclick="filterCategory('segar')">
-            <i class="fas fa-leaf me-2"></i>Kembang Tahu Segar
-        </button>
-        <button class="btn btn-category" data-category="kering" onclick="filterCategory('kering')">
-            <i class="fas fa-box me-2"></i>Kembang Tahu Kering
-        </button>
-        <button class="btn btn-category" data-category="olahan" onclick="filterCategory('olahan')">
-            <i class="fas fa-utensils me-2"></i>Olahan Kembang Tahu
-        </button>
-        <button class="btn btn-category" data-category="kulit" onclick="filterCategory('kulit')">
-            <i class="fas fa-layer-group me-2"></i>Kulit Tahu
-        </button>
-    </div>
+</div>
 
-    <!-- Products Grid -->
-    <div class="row g-4" id="productsContainer">
+<!-- Product List -->
+<div class="container mt-3 px-3">
+    <div class="row" id="productsContainer">
         @forelse($products as $product)
-        <div class="col-md-6 col-lg-3 product-item" data-category="{{ $product->kategori }}">
-            <div class="card product-card h-100 border-0 shadow-sm">
-                <div class="position-relative overflow-hidden" style="height: 220px; background: #f8f9fa;">
+        <div class="col-12 col-md-6 col-lg-4 product-item" data-category="{{ $product->kategori }}">
+            <div class="menu-item">
+                <div class="menu-content pe-2">
+                    <div>
+                        <h3 class="menu-title">{{ $product->nama_produk }}</h3>
+                        <p class="menu-desc">{{ $product->deskripsi }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <span class="menu-price">Rp {{ number_format($product->harga, 0, ',', '.') }}</span>
+                        
+                        <form action="{{ route('pelanggan.cart.add') }}" method="POST" class="m-0">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn-add" {{ $product->stok <= 0 ? 'disabled' : '' }}>
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="menu-img-container">
                     @if($product->gambar)
-                        <img src="{{ Storage::url($product->gambar) }}" 
-                             class="card-img-top h-100 w-100" 
-                             style="object-fit: cover;" 
-                             alt="{{ $product->nama_produk }}">
+                        <img src="{{ Storage::url($product->gambar) }}" class="menu-img" alt="{{ $product->nama_produk }}">
                     @else
-                        <div class="d-flex align-items-center justify-content-center h-100 bg-light">
-                            <i class="fas fa-image fa-3x text-muted"></i>
+                        <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light text-muted">
+                            <i class="fas fa-image fa-2x"></i>
                         </div>
                     @endif
                     @if($product->stok <= 0)
                         <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center">
-                            <span class="badge bg-danger fs-6">Stok Habis</span>
+                            <span class="badge bg-danger small">Habis</span>
                         </div>
                     @endif
-                    <div class="position-absolute top-0 end-0 m-2">
-                        <span class="badge bg-primary">{{ ucfirst($product->kategori) }}</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title fw-bold mb-2">{{ $product->nama_produk }}</h5>
-                    <p class="card-text text-muted small mb-3">{{ Str::limit($product->deskripsi, 80) }}</p>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <span class="text-primary fw-bold fs-5">Rp {{ number_format($product->harga, 0, ',', '.') }}</span>
-                        </div>
-                        <div>
-                            @if($product->stok > 0)
-                                <span class="badge bg-success">Stok: {{ $product->stok }}</span>
-                            @else
-                                <span class="badge bg-danger">Habis</span>
-                            @endif
-                        </div>
-                    </div>
-                    <form action="{{ route('pelanggan.cart.add') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <input type="hidden" name="quantity" value="1">
-                        <button type="submit" 
-                                class="btn btn-primary w-100" 
-                                {{ $product->stok <= 0 ? 'disabled' : '' }}>
-                            <i class="fas fa-cart-plus me-2"></i>
-                            {{ $product->stok > 0 ? 'Tambah ke Keranjang' : 'Stok Habis' }}
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>
         @empty
-        <div class="col-12">
-            <div class="text-center py-5">
-                <i class="fas fa-box-open fa-4x text-muted mb-3"></i>
-                <h5 class="text-muted">Belum ada produk tersedia</h5>
-            </div>
+        <div class="col-12 text-center py-5">
+            <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
+            <p class="text-muted">Menu belum tersedia</p>
         </div>
         @endforelse
     </div>
 </div>
 
-<!-- E-Catalog QR Section -->
-<div class="container py-5 border-top mt-5">
-    <div class="row align-items-center justify-content-center bg-light rounded-4 p-4 p-md-5 shadow-sm">
-        <div class="col-md-5 text-center mb-4 mb-md-0">
-            <img src="{{ Storage::url('qr-menu.png') }}" alt="QR Code E-Catalog" class="img-fluid rounded-3 shadow" style="max-width: 250px; border: 10px solid white;">
-        </div>
-        <div class="col-md-7 text-center text-md-start">
-            <h3 class="fw-bold text-primary mb-3"><i class="fas fa-qrcode me-2"></i>E-Catalog Kembang Tahu 65</h3>
-            <p class="lead text-muted mb-4">Simpan atau pindai (Scan) QR Code ini untuk membagikan atau melihat menu digital kami dengan mudah kapan saja!</p>
-            <a href="{{ Storage::url('qr-menu.png') }}" download="QR-Kembang-Tahu-65.png" target="_blank" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">
-                <i class="fas fa-download me-2"></i>Download QR Code
-            </a>
-        </div>
+<!-- E-Catalog Info Section -->
+<div class="container py-4 mt-2 mb-4">
+    <div class="bg-white rounded-4 p-4 shadow-sm text-center border">
+        <h5 class="fw-bold mb-2" style="color: #8b5a2b;"><i class="fas fa-info-circle me-2"></i>Tentang Kami</h5>
+        <p class="text-muted small mb-0">{{ $setting->deskripsi ?? 'Nikmati kembang tahu segar dan berkualitas dari Kembang Tahu 65.' }}</p>
+        <hr class="my-3 text-muted opacity-25">
+        <a href="{{ Storage::url('qr-menu.png') }}" download target="_blank" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+            <i class="fas fa-qrcode me-1"></i> Simpan QR Menu
+        </a>
     </div>
 </div>
 
-<style>
-.btn-category {
-    padding: 10px 25px;
-    border-radius: 50px;
-    border: 2px solid #dee2e6;
-    background: white;
-    color: #6c757d;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.btn-category:hover, .btn-category.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-color: transparent;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-}
-
-.product-card {
-    transition: all 0.3s ease;
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
-}
-
-.product-card .card-img-top {
-    transition: transform 0.3s ease;
-}
-
-.product-card:hover .card-img-top {
-    transform: scale(1.05);
-}
-</style>
-
 <script>
 function filterCategory(category) {
-    // Update active button
-    document.querySelectorAll('.btn-category').forEach(btn => {
-        btn.classList.remove('active');
-    });
+    document.querySelectorAll('.btn-category').forEach(btn => btn.classList.remove('active'));
     document.querySelector(`[data-category="${category}"]`).classList.add('active');
     
-    // Filter products
-    const products = document.querySelectorAll('.product-item');
-    products.forEach(product => {
+    document.querySelectorAll('.product-item').forEach(product => {
         if (category === 'all' || product.dataset.category === category) {
             product.style.display = 'block';
-            setTimeout(() => {
-                product.style.opacity = '1';
-                product.style.transform = 'scale(1)';
-            }, 10);
         } else {
-            product.style.opacity = '0';
-            product.style.transform = 'scale(0.8)';
-            setTimeout(() => {
-                product.style.display = 'none';
-            }, 300);
+            product.style.display = 'none';
         }
     });
 }
