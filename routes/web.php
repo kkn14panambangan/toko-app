@@ -83,20 +83,4 @@ Route::get('/setup-db-2026', function() {
     return "Database has been refreshed and seeded successfully.";
 });
 
-// TEMP: Add Botok Tahu product
-Route::get('/add-botok-tahu', function () {
-    $imageSource = public_path('botok-tahu-temp.jpg');
-    $disk = \Illuminate\Support\Facades\Storage::disk('s3');
-    $filename = 'botok-tahu.jpg';
-    $disk->put($filename, file_get_contents($imageSource), 'public');
-    \App\Models\Product::create([
-        'nama_produk' => 'Botok Tahu',
-        'deskripsi'   => 'Bisa dikondisikan sesuai request pembeli. Per 1 porsi.',
-        'harga'       => 3000,
-        'stok'        => 100,
-        'kategori'    => 'botok',
-        'gambar'      => $filename,
-    ]);
-    return "Botok Tahu berhasil ditambahkan!";
-});
 
