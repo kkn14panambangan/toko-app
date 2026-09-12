@@ -25,7 +25,10 @@ $cacheVars = [
     'APP_PACKAGES_CACHE' => '/tmp/storage/bootstrap/cache/packages.php',
     'APP_ROUTES_CACHE' => '/tmp/storage/bootstrap/cache/routes.php',
     'APP_SERVICES_CACHE' => '/tmp/storage/bootstrap/cache/services.php',
-    'VIEW_COMPILED_PATH' => '/tmp/storage/framework/views'
+    'VIEW_COMPILED_PATH' => '/tmp/storage/framework/views',
+    // Paksa override kredensial DB karena Vercel Dashboard mungkin masih menyimpan konfigurasi lama
+    'DB_PORT' => '5432',
+    'DB_PASSWORD' => 'panambangan',
 ];
 foreach ($cacheVars as $key => $value) {
     putenv("$key=$value");
