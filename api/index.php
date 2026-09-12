@@ -26,8 +26,10 @@ $cacheVars = [
     'APP_ROUTES_CACHE' => '/tmp/storage/bootstrap/cache/routes.php',
     'APP_SERVICES_CACHE' => '/tmp/storage/bootstrap/cache/services.php',
     'VIEW_COMPILED_PATH' => '/tmp/storage/framework/views',
-    // Paksa override kredensial DB karena Vercel Dashboard mungkin masih menyimpan konfigurasi lama
-    'DB_PORT' => '5432',
+    // Paksa override kredensial DB dengan Connection Pooler IPv4 untuk Vercel
+    'DB_HOST' => 'aws-0-ap-northeast-2.pooler.supabase.com',
+    'DB_PORT' => '6543',
+    'DB_USERNAME' => 'postgres.uarfbwwhfbfxabklgqzf',
     'DB_PASSWORD' => 'panambangan',
 ];
 foreach ($cacheVars as $key => $value) {
