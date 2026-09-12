@@ -42,7 +42,7 @@
         "SESSION_DRIVER": "cookie",
         "QUEUE_CONNECTION": "sync",
         "DB_CONNECTION": "pgsql",
-        "DB_HOST": "db.vmbeqfvinubobtatzsin.supabase.co",
+        "DB_HOST": "db.uarfbwwhfbfxabklgqzf.supabase.co",
         "DB_PORT": "6543",
         "DB_DATABASE": "postgres",
         "DB_USERNAME": "postgres",
@@ -51,8 +51,8 @@
         "AWS_SECRET_ACCESS_KEY": "f024486f1e467361e035d0e9f97fa19f16853b9b49737567fdc2851bb307e976",
         "AWS_DEFAULT_REGION": "ap-northeast-2",
         "AWS_BUCKET": "toko-app-images",
-        "AWS_URL": "https://vmbeqfvinubobtatzsin.supabase.co/storage/v1/object/public/toko-app-images",
-        "AWS_ENDPOINT": "https://vmbeqfvinubobtatzsin.storage.supabase.co/storage/v1/s3",
+        "AWS_URL": "https://uarfbwwhfbfxabklgqzf.supabase.co/storage/v1/object/public/toko-app-images",
+        "AWS_ENDPOINT": "https://uarfbwwhfbfxabklgqzf.storage.supabase.co/storage/v1/s3",
         "AWS_USE_PATH_STYLE_ENDPOINT": "true",
         "FILESYSTEM_DISK": "s3"
     }
