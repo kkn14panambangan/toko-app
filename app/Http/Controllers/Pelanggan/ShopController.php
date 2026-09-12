@@ -139,6 +139,7 @@ class ShopController extends Controller
                 'status' => 'pending',
             ]);
 
+            $itemDetails = [];
             foreach ($cart as $productId => $item) {
                 TransactionItem::create([
                     'transaction_id' => $transaction->id,
@@ -151,9 +152,40 @@ class ShopController extends Controller
                 if ($product) {
                     $product->decrement('stok', $item['quantity']);
                 }
+
+                $itemDetails[] = [
+                    'id' => $productId,
+                    'price' => $item['harga'],
+                    'quantity' => $item['quantity'],
+                    'name' => substr($item['nama'], 0, 50),
+                ];
             }
 
             session()->forget('cart');
+            
+            // Konfigurasi Midtrans
+            \Midtrans\Config::$serverKey = config('services.midtrans.server_key');
+            \Midtrans\Config::$isProduction = config('services.midtrans.is_production');
+            \Midtrans\Config::$isSanitized = true;
+            \Midtrans\Config::$is3ds = true;
+
+            if (strtolower($request->metode_pembayaran) === 'qris') {
+                $params = [
+                    'transaction_details' => [
+                        'order_id' => $transaction->kode_transaksi,
+                        'gross_amount' => (int) $transaction->total,
+                    ],
+                    'item_details' => $itemDetails,
+                    'customer_details' => [
+                        'first_name' => auth()->user() ? auth()->user()->name : 'Pelanggan',
+                        'email' => auth()->user() ? auth()->user()->email : 'pelanggan@example.com',
+                    ]
+                ];
+
+                $snapToken = \Midtrans\Snap::getSnapToken($params);
+                $transaction->update(['snap_token' => $snapToken]);
+            }
+
             DB::commit();
 
             if (strtolower($request->metode_pembayaran) === 'qris') {

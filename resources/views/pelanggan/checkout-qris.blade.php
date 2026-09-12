@@ -10,12 +10,7 @@
         </div>
         <div class="card-body p-4 text-center">
             
-            <p class="text-muted mb-4">Silakan scan QR Code di bawah ini menggunakan aplikasi DANA, GoPay, OVO, ShopeePay, atau Mobile Banking Anda.</p>
-            
-            <div class="qr-container mb-4 mx-auto" style="border: 2px solid #E5E7EB; border-radius: 20px; padding: 20px; background: white; max-width: 300px;">
-                <!-- QR Code image that we copied to public/qris-payment.jpg -->
-                <img src="{{ asset('qris-payment.jpg') }}" alt="QRIS Kembang Tahu" class="img-fluid rounded" style="width: 100%;">
-            </div>
+            <p class="text-muted mb-4">Silakan klik tombol di bawah ini untuk membuka halaman pembayaran (Bisa langsung menyambung ke DANA, GoPay, OVO, dll).</p>
             
             <div class="alert alert-info rounded-3 mb-4 text-start">
                 <div class="d-flex align-items-center mb-2">
@@ -29,16 +24,36 @@
                 Kode Transaksi: <strong>{{ $transaction->kode_transaksi }}</strong>
             </p>
 
-            <a href="{{ route('pelanggan.checkout.success', $transaction->id) }}" class="btn w-100 rounded-pill fw-bold py-3 mb-2" style="background-color: #00880F; color: white; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(0, 136, 15, 0.2);">
-                Saya Sudah Bayar
-            </a>
+            <button id="pay-button" class="btn w-100 rounded-pill fw-bold py-3 mb-2" style="background-color: #00880F; color: white; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(0, 136, 15, 0.2);">
+                <i class="fas fa-wallet me-2"></i> Bayar Sekarang
+            </button>
             
-            <a href="{{ route('pelanggan.checkout.success', $transaction->id) }}" class="btn btn-outline-secondary w-100 rounded-pill fw-bold py-2">
+            <a href="{{ route('pelanggan.checkout.success', $transaction->id) }}" class="btn btn-outline-secondary w-100 rounded-pill fw-bold py-2 mt-2">
                 Nanti Saja
             </a>
         </div>
     </div>
 </div>
+
+<script src="{{ config('services.midtrans.is_production') ? 'https://app.midtrans.com/snap/snap.js' : 'https://app.sandbox.midtrans.com/snap/snap.js' }}" data-client-key="{{ config('services.midtrans.client_key') }}"></script>
+<script type="text/javascript">
+    document.getElementById('pay-button').onclick = function(){
+      snap.pay('{{ $transaction->snap_token }}', {
+        onSuccess: function(result){
+          window.location.href = "{{ route('pelanggan.checkout.success', $transaction->id) }}";
+        },
+        onPending: function(result){
+          window.location.href = "{{ route('pelanggan.checkout.success', $transaction->id) }}";
+        },
+        onError: function(result){
+          alert("Pembayaran gagal!");
+        },
+        onClose: function(){
+          alert('Anda menutup popup tanpa menyelesaikan pembayaran');
+        }
+      });
+    };
+</script>
 
 <style>
 .qr-container {

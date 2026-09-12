@@ -21,6 +21,7 @@ class Transaction extends Model
     'metode_pembayaran',
     'status',
     'tanggal_transaksi',
+    'snap_token',
 ];
 
     /**

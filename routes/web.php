@@ -46,6 +46,8 @@ Route::prefix('pelanggan')->name('pelanggan.')->group(function () {
     Route::get('/api/cart/status', [ShopController::class, 'ajaxCartStatus'])->name('api.cart.status');
 });
 
+Route::post('/api/midtrans-callback', [App\Http\Controllers\Api\PaymentCallbackController::class, 'receive']);
+
 // ==========================================
 // LOGIN ADMIN (PUBLIK - TANPA PROTEKSI)
 // ==========================================
