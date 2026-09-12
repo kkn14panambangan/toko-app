@@ -392,7 +392,7 @@
             @foreach($items as $product)
             <div class="grab-item">
                 <!-- Left: Text -->
-                <div class="grab-item-content" onclick="openProductDetail('{{ $product->id }}', '{{ htmlspecialchars($product->nama_produk, ENT_QUOTES) }}', '{{ htmlspecialchars($product->deskripsi, ENT_QUOTES) }}', '{{ number_format($product->harga, 0, ',', '.') }}', '{{ $product->gambar ? Storage::url($product->gambar) : '' }}')" style="cursor: pointer;">
+                <div class="grab-item-content" onclick="openProductDetail('{{ $product->id }}', '{{ htmlspecialchars($product->nama_produk ?? '', ENT_QUOTES) }}', '{{ htmlspecialchars($product->deskripsi ?? '', ENT_QUOTES) }}', '{{ number_format($product->harga, 0, ',', '.') }}', '{{ $product->gambar ? Storage::url($product->gambar) : '' }}')" style="cursor: pointer;">
                     @if($product->kategori == 'segar')
                         <div class="text-danger mb-1" style="font-size: 0.7rem; font-weight: 700;">
                             <i class="fas fa-shopping-bag me-1"></i> Sering dibeli lagi
@@ -406,9 +406,9 @@
                 <!-- Right: Image & Button -->
                 <div class="grab-img-wrapper">
                     @if($product->gambar)
-                        <img src="{{ Storage::url($product->gambar) }}" class="grab-item-img" alt="{{ $product->nama_produk }}" onclick="openProductDetail('{{ $product->id }}', '{{ htmlspecialchars($product->nama_produk, ENT_QUOTES) }}', '{{ htmlspecialchars($product->deskripsi, ENT_QUOTES) }}', '{{ number_format($product->harga, 0, ',', '.') }}', '{{ Storage::url($product->gambar) }}')" style="cursor: pointer;">
+                        <img src="{{ Storage::url($product->gambar) }}" class="grab-item-img" alt="{{ $product->nama_produk }}" onclick="openProductDetail('{{ $product->id }}', '{{ htmlspecialchars($product->nama_produk ?? '', ENT_QUOTES) }}', '{{ htmlspecialchars($product->deskripsi ?? '', ENT_QUOTES) }}', '{{ number_format($product->harga, 0, ',', '.') }}', '{{ Storage::url($product->gambar) }}')" style="cursor: pointer;">
                     @else
-                        <div class="grab-item-img d-flex align-items-center justify-content-center text-muted border" onclick="openProductDetail('{{ $product->id }}', '{{ htmlspecialchars($product->nama_produk, ENT_QUOTES) }}', '{{ htmlspecialchars($product->deskripsi, ENT_QUOTES) }}', '{{ number_format($product->harga, 0, ',', '.') }}', '')" style="cursor: pointer;">
+                        <div class="grab-item-img d-flex align-items-center justify-content-center text-muted border" onclick="openProductDetail('{{ $product->id }}', '{{ htmlspecialchars($product->nama_produk ?? '', ENT_QUOTES) }}', '{{ htmlspecialchars($product->deskripsi ?? '', ENT_QUOTES) }}', '{{ number_format($product->harga, 0, ',', '.') }}', '')" style="cursor: pointer;">
                             <i class="fas fa-image fa-2x"></i>
                         </div>
                     @endif
