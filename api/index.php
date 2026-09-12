@@ -36,7 +36,4 @@ foreach ($cacheVars as $key => $value) {
 $app = require_once __DIR__ . '/../bootstrap/app.php';
 $app->useStoragePath($storagePath);
 
-$request = Illuminate\Http\Request::capture();
-$response = $app->handleRequest($request);
-$response->send();
-$app->terminate($request, $response);
+$app->handleRequest(Illuminate\Http\Request::capture());
