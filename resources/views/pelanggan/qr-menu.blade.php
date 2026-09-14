@@ -13,10 +13,10 @@
         </div>
         <div class="card-body p-0 text-center" style="background-color: #1A1614;">
             <!-- The actual QR Image -->
-            <img src="{{ asset('qr-menu.png') }}" alt="QR Menu Kembang Tahu" class="img-fluid" style="width: 100%;">
+            <img src="{{ asset('storage/qr.png') }}" alt="QR Menu Kembang Tahu" class="img-fluid" style="width: 100%;">
             
             <div class="p-4" style="background-color: #2F1E14;">
-                <a href="{{ asset('qr-menu.png') }}" download="QR_Menu_Kembang_Tahu.png" class="btn w-100 rounded-pill fw-bold py-3 mb-2" style="background-color: #D4AF37; color: #1A1614; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);">
+                <a href="{{ asset('storage/qr.png') }}" download="QR_Menu_Kembang_Tahu.png" class="btn w-100 rounded-pill fw-bold py-3 mb-2" style="background-color: #D4AF37; color: #1A1614; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);">
                     <i class="fas fa-download me-2"></i> Simpan Gambar
                 </a>
             </div>
