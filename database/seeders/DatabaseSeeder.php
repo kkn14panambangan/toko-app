@@ -26,7 +26,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \DB::table('products')->insert([
-            ['id' => 2, 'nama_produk' => 'Kembang Tahu Segar', 'kategori' => 'segar', 'deskripsi' => null, 'harga' => 5000.00, 'stok' => 10, 'gambar' => 'products/1788260770_WhatsApp Image 2026-09-01 at 12.57.09.jpeg', 'created_at' => '2026-08-31 13:09:34', 'updated_at' => '2026-09-01 04:08:24']
+            ['id' => 2, 'nama_produk' => 'Kembang Tahu Segar', 'kategori' => 'segar', 'deskripsi' => null, 'harga' => 5000.00, 'stok' => 10, 'gambar' => 'products/1788260770_WhatsApp Image 2026-09-01 at 12.57.09.jpeg', 'created_at' => '2026-08-31 13:09:34', 'updated_at' => '2026-09-01 04:08:24'],
+            ['id' => 3, 'nama_produk' => 'Botok Tahu Pak Ujang', 'kategori' => 'olahan', 'deskripsi' => 'Khas Panambangan. Bisa dikondisikan sesuai request pembeli PER 1 PORSI. Kontak: 082213066810 (Bapak Ujang). Alamat: Dusun 2 blok.cantilan balong RT 02 RW 04 Desa panambangan kec.sedong kab.cirebon Jawa barat.', 'harga' => 3000.00, 'stok' => 100, 'gambar' => null, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => 4, 'nama_produk' => 'Kembang Tahu Pak Ujang', 'kategori' => 'olahan', 'deskripsi' => 'Khas Panambangan. Bisa dikondisikan sesuai request pembeli PER 1 PORSI. Kontak: 082213066810 (Bapak Ujang). Alamat: Dusun 2 blok.cantilan balong RT 02 RW 04 Desa panambangan kec.sedong kab.cirebon Jawa barat.', 'harga' => 7000.00, 'stok' => 100, 'gambar' => null, 'created_at' => now(), 'updated_at' => now()]
         ]);
     }
 }
