@@ -19,7 +19,7 @@
     /* Grab Header Cover */
     .grab-header {
         height: 220px;
-        background: url('{{ Storage::url('logo.jpg') }}') center/cover no-repeat;
+        background: url('{{ Storage::url('products/logo.jpg') }}') center/cover no-repeat;
         position: relative;
     }
     
