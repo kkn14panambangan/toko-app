@@ -24,3 +24,12 @@ Homestead.yaml
 Thumbs.db
 
 .vercel
+
+# Ignore scratch files
+err*.html
+error*.html
+output*.html
+test_*.php
+test.php
+upload_*.php
+update_*.php
