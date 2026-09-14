@@ -10,331 +10,73 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: #F3F4F6; /* Gray background */
-        padding-bottom: 90px;
-    }
-
-    /* Grab Header Cover */
-    .grab-header {
-        height: 220px;
-        background: url('{{ Storage::url('products/logo.jpg') }}') center/cover no-repeat;
-        position: relative;
-    }
+    body { font-family: 'Inter', sans-serif; background-color: #F3F4F6; padding-bottom: 100px; }
+    .grab-header { height: 220px; background: url('{{ Storage::url('products/logo.jpg') }}') center/cover no-repeat; position: relative; }
+    .grab-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%); }
+    .grab-store-card { background: #FFFFFF; border-radius: 24px; margin: -60px 15px 15px 15px; padding: 20px; position: relative; z-index: 10; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    .store-title { font-weight: 800; color: #1F2937; font-size: 1.4rem; margin-bottom: 8px; line-height: 1.2; }
+    .store-meta { font-size: 0.85rem; color: #4B5563; display: flex; align-items: center; margin-bottom: 15px; }
+    .grab-action-buttons { display: flex; gap: 10px; }
+    .grab-action-btn { padding: 10px 15px; border-radius: 20px; border: 1px solid #E5E7EB; font-size: 0.85rem; font-weight: 600; color: #374151; background: #FFFFFF; display: flex; align-items: center; gap: 8px; justify-content: center; transition: all 0.2s; }
+    .grab-action-btn:hover { background: #F9FAFB; border-color: #D1D5DB; }
+    .grab-menu-section { background: #F3F4F6; margin-top: 10px; padding-top: 10px; padding-bottom: 20px; }
+    .menu-section-title { font-size: 1.15rem; font-weight: 800; color: #111827; padding: 15px 20px 10px 20px; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; }
     
-    .grab-header::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
-    }
-
-    /* Floating Store Card */
-    .grab-store-card {
-        background: #FFFFFF;
-        border-radius: 24px;
-        margin: -60px 15px 15px 15px;
-        padding: 20px;
-        position: relative;
-        z-index: 10;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-    }
-
-    .store-title {
-        font-weight: 800;
-        color: #1F2937;
-        font-size: 1.4rem;
-        margin-bottom: 8px;
-        line-height: 1.2;
-    }
-
-    .store-meta {
-        font-size: 0.85rem;
-        color: #4B5563;
-        display: flex;
-        align-items: center;
-        margin-bottom: 15px;
-    }
-
-    .grab-delivery-toggle {
-        display: flex;
-        background: #F3F4F6;
-        border-radius: 30px;
-        padding: 4px;
-        margin-bottom: 15px;
-    }
-
-    .grab-toggle-btn {
-        flex: 1;
-        text-align: center;
-        padding: 8px 0;
-        font-size: 0.85rem;
-        font-weight: 600;
-        border-radius: 26px;
-        color: #4B5563;
-    }
-
-    .grab-toggle-btn.active {
-        background: #00B14F; /* Grab Green */
-        color: #FFFFFF;
-        box-shadow: 0 2px 4px rgba(0, 177, 79, 0.3);
-    }
-
-    .grab-action-buttons {
-        display: flex;
-        gap: 10px;
-    }
+    .grab-list-container { padding: 0; background: #FFFFFF; border-radius: 0; border-top: 1px solid #E5E7EB; border-bottom: 1px solid #E5E7EB; }
+    .grab-item { display: flex; padding: 15px 20px; border-bottom: 1px solid #E5E7EB; gap: 15px; background: #FFFFFF; transition: background 0.2s; }
+    .grab-item:last-child { border-bottom: none; }
+    .grab-item:active { background: #F9FAFB; }
     
-    .grab-action-btn {
-        padding: 8px 15px;
-        border-radius: 20px;
-        border: 1px solid #E5E7EB;
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #374151;
-        background: #FFFFFF;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    /* Menu Section Container */
-    .grab-menu-section {
-        background: #FFFFFF;
-        margin-top: 10px;
-        padding-top: 20px;
-    }
-
-    .menu-section-title {
-        font-size: 1.1rem;
-        font-weight: 800;
-        color: #111827;
-        padding: 0 20px 15px 20px;
-        margin: 0;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    /* Grab List Item */
-    .grab-item {
-        display: flex;
-        padding: 15px 20px;
-        border-bottom: 1px dashed #E5E7EB;
-        gap: 15px;
-    }
+    .grab-item-content { flex: 1; display: flex; flex-direction: column; }
+    .grab-item-title { font-weight: 700; font-size: 1.05rem; color: #1F2937; margin-bottom: 6px; line-height: 1.3; }
+    .grab-item-desc { font-size: 0.8rem; color: #6B7280; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .grab-item-price { font-weight: 700; color: #111827; font-size: 1rem; margin-top: auto; }
     
-    .grab-item:last-child {
-        border-bottom: none;
-    }
-
-    .grab-item-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .grab-item-title {
-        font-weight: 700;
-        font-size: 1.05rem;
-        color: #1F2937;
-        margin-bottom: 6px;
-        line-height: 1.3;
-    }
-
-    .grab-item-desc {
-        font-size: 0.8rem;
-        color: #6B7280;
-        margin-bottom: 8px;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .grab-item-price {
-        font-weight: 700;
-        color: #111827;
-        font-size: 1rem;
-        margin-top: auto;
-    }
-
-    /* Grab Image & Add Button */
-    .grab-img-wrapper {
-        position: relative;
-        width: 110px;
-        height: 110px;
-        flex-shrink: 0;
-    }
-
-    .grab-item-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 12px;
-        background: #F3F4F6;
-    }
-
-    .grab-btn-add {
-        position: absolute;
-        bottom: -12px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #FFFFFF;
-        color: #00B14F;
-        border: 1.5px solid #00B14F;
-        padding: 4px 18px;
-        border-radius: 20px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        white-space: nowrap;
-        transition: all 0.2s;
-        z-index: 2;
-    }
+    .grab-img-wrapper { position: relative; width: 110px; height: 110px; flex-shrink: 0; }
+    .grab-item-img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; background: #F3F4F6; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
     
-    .grab-btn-add:active {
-        background: #F0FDF4;
-        transform: translateX(-50%) scale(0.95);
-    }
+    .grab-btn-add { position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); background: #FFFFFF; color: #00B14F; border: 1.5px solid #00B14F; padding: 5px 18px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 4px 10px rgba(0,0,0,0.08); white-space: nowrap; transition: all 0.2s; z-index: 2; }
+    .grab-btn-add:active { background: #F0FDF4; transform: translateX(-50%) scale(0.95); }
+    .grab-btn-add:disabled { border-color: #D1D5DB; color: #9CA3AF; background: #F3F4F6; box-shadow: none; }
     
-    .grab-btn-add:disabled {
-        border-color: #D1D5DB;
-        color: #9CA3AF;
-        background: #F3F4F6;
-        box-shadow: none;
-    }
-
-    /* Grab Qty Control */
-    .cart-ctrl-wrapper {
-        position: absolute;
-        bottom: -12px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 2;
-    }
-    .grab-qty-ctrl {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        background: white;
-        border: 1.5px solid #00B14F;
-        border-radius: 20px;
-        padding: 3px 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        white-space: nowrap;
-    }
-    .grab-qty-btn {
-        background: none;
-        border: none;
-        color: #00880F;
-        font-weight: 800;
-        font-size: 1rem;
-        line-height: 1;
-        padding: 0 2px;
-        cursor: pointer;
-    }
-    .grab-qty-num {
-        font-weight: 700;
-        color: #111827;
-        font-size: 0.85rem;
-        min-width: 16px;
-        text-align: center;
-    }
-
-    /* Floating Red Menu Button */
-    .floating-menu-btn {
-        position: fixed;
-        bottom: 80px; /* Above bottom nav */
-        left: 50%;
-        transform: translateX(-50%);
-        background: #E02020; /* Grab Red / Warning color */
-        color: #FFFFFF;
-        padding: 10px 24px;
-        border-radius: 30px;
-        font-weight: 700;
-        font-size: 0.95rem;
-        box-shadow: 0 4px 12px rgba(224, 32, 32, 0.4);
-        z-index: 1030;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        text-decoration: none;
-        transition: transform 0.2s;
-    }
+    .cart-ctrl-wrapper { position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); z-index: 2; }
+    .grab-qty-ctrl { display: flex; align-items: center; gap: 4px; background: white; border: 1.5px solid #00B14F; border-radius: 20px; padding: 4px 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); white-space: nowrap; }
+    .grab-qty-btn { background: none; border: none; color: #00880F; font-weight: 800; font-size: 1rem; line-height: 1; padding: 0 4px; cursor: pointer; }
+    .grab-qty-num { font-weight: 700; color: #111827; font-size: 0.85rem; min-width: 16px; text-align: center; }
     
-    .floating-menu-btn:active {
-        transform: translateX(-50%) scale(0.95);
-    }
-
-    /* Floating WhatsApp Button */
-    #waContainer {
-        position: fixed;
-        bottom: 95px;
-        right: 20px;
-        z-index: 1050;
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
+    .floating-menu-btn { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); background: #E02020; color: #FFFFFF; padding: 12px 28px; border-radius: 30px; font-weight: 700; font-size: 0.95rem; box-shadow: 0 6px 16px rgba(224, 32, 32, 0.4); z-index: 1030; display: flex; align-items: center; gap: 8px; transition: transform 0.2s; }
+    .floating-menu-btn:active { transform: translateX(-50%) scale(0.95); }
     
-    .floating-wa-btn {
-        background-color: #25D366;
-        color: white;
-        border-radius: 50%;
-        width: 56px;
-        height: 56px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
-        text-decoration: none;
-        animation: pulse-wa 2s infinite;
-        transition: all 0.2s;
-    }
-
-    .floating-wa-btn:hover {
-        transform: scale(1.15) rotate(5deg);
-        color: white;
-        animation: none;
-    }
-
-    @keyframes pulse-wa {
-        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-        70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
-        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-    }
+    #waContainer { position: fixed; bottom: 95px; right: 20px; z-index: 1050; }
+    .floating-wa-btn { background-color: #25D366; color: white; border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4); text-decoration: none; animation: pulse-wa 2s infinite; transition: all 0.2s; }
+    .floating-wa-btn:hover { transform: scale(1.1); color: white; animation: none; }
+    @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
     
-    /* Social Media Hover */
-    .social-badge {
-        transition: all 0.2s ease-in-out;
-    }
-    .social-badge:hover {
-        transform: translateY(-2px);
-        background-color: #E5E7EB !important;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    }
+    .social-badge { transition: all 0.2s; }
+    .social-badge:hover { transform: translateY(-2px); background-color: #E5E7EB !important; }
+    html { scroll-behavior: smooth; }
     
-    /* Smooth Scroll */
-    html {
-        scroll-behavior: smooth;
-    }
-    
-    /* Fade In Animation for Items */
-    .grab-item {
-        animation: fadeInItem 0.5s ease-out forwards;
-        opacity: 0;
-    }
-    @keyframes fadeInItem {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    /* Staggered animation delays */
-    .grab-item:nth-child(1) { animation-delay: 0.1s; }
-    .grab-item:nth-child(2) { animation-delay: 0.2s; }
-    .grab-item:nth-child(3) { animation-delay: 0.3s; }
-    .grab-item:nth-child(4) { animation-delay: 0.4s; }
-    .grab-item:nth-child(n+5) { animation-delay: 0.5s; }
+    .grab-item { animation: fadeInItem 0.5s ease-out forwards; opacity: 0; }
+    @keyframes fadeInItem { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .grab-item:nth-child(1) { animation-delay: 0.1s; } .grab-item:nth-child(2) { animation-delay: 0.2s; } .grab-item:nth-child(3) { animation-delay: 0.3s; } .grab-item:nth-child(n+4) { animation-delay: 0.4s; }
 
+    /* RESPONSIVE DESKTOP LAYOUT */
+    @media (min-width: 768px) {
+        .grab-header { height: 340px; background-attachment: fixed; }
+        .grab-store-card { max-width: 900px; margin: -80px auto 30px auto; border-radius: 24px; padding: 30px; }
+        .grab-menu-section { max-width: 900px; margin: 0 auto 40px auto; background: transparent; padding-top: 0; }
+        .menu-section-title { padding: 25px 0 15px 0; font-size: 1.3rem; }
+        .grab-list-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 0; background: transparent; border: none; }
+        .grab-item { border: 1px solid #E5E7EB; border-radius: 16px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); transition: transform 0.3s, box-shadow 0.3s; }
+        .grab-item:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.08); border-color: #D1D5DB; }
+        .grab-img-wrapper { width: 130px; height: 130px; }
+        .grab-item-title { font-size: 1.15rem; }
+        .grab-item-desc { font-size: 0.85rem; -webkit-line-clamp: 3; }
+        #cart-bar > div { max-width: 900px; margin: 0 auto; border-radius: 16px 16px 0 0; }
+        .floating-menu-btn { bottom: 40px; }
+        #waContainer { bottom: 40px; right: 40px; }
+        .modal-dialog { max-width: 400px; margin: 10vh auto; }
+    }
 </style>
 
 <!-- Top Header Cover -->
