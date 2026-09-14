@@ -504,6 +504,51 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault(); 
         }
     });
+
+    // ----------------------------------------------------
+    // SWIPE TO DISMISS OFFCANVAS
+    // ----------------------------------------------------
+    const detailOffcanvas = document.getElementById('productDetailModal');
+    const offcanvasHeader = detailOffcanvas.querySelector('.pt-2.pb-1'); // The pull indicator area
+    let startY = 0;
+    let currentY = 0;
+    let isSwiping = false;
+
+    if(offcanvasHeader) {
+        offcanvasHeader.addEventListener('touchstart', function(e) {
+            startY = e.touches[0].clientY;
+            isSwiping = true;
+            detailOffcanvas.style.transition = 'none'; // Instant drag tracking
+        }, { passive: true });
+
+        offcanvasHeader.addEventListener('touchmove', function(e) {
+            if (!isSwiping) return;
+            currentY = e.touches[0].clientY;
+            const diff = currentY - startY;
+            if (diff > 0) { // Only allow dragging downwards
+                e.preventDefault(); // Prevent scrolling page
+                detailOffcanvas.style.transform = `translateY(${diff}px)`;
+            }
+        }, { passive: false });
+
+        offcanvasHeader.addEventListener('touchend', function(e) {
+            if (!isSwiping) return;
+            isSwiping = false;
+            detailOffcanvas.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)'; // Smooth snap back or hide
+            
+            const diff = currentY - startY;
+            if (diff > 80) { // Threshold to close
+                const bsOffcanvas = bootstrap.Offcanvas.getInstance(detailOffcanvas) || new bootstrap.Offcanvas(detailOffcanvas);
+                bsOffcanvas.hide();
+            } else {
+                detailOffcanvas.style.transform = ''; // Snap back to top
+            }
+        });
+        
+        detailOffcanvas.addEventListener('hidden.bs.offcanvas', function () {
+            detailOffcanvas.style.transform = ''; // Reset when hidden
+        });
+    }
 });
 </script>
 @endsection
